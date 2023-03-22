@@ -25,12 +25,21 @@ public class TerrainGenerationManager : MonoBehaviour
             case AlgorithmType.DiamondSquare:
                 algorithm = new DiamondSquare();
                 break;
-            default:
-                return;
+            case AlgorithmType.PerlinNoise: 
+                algorithm = new PerlinNoise();
                 break;
+            case AlgorithmType.SimplexNoise:
+                algorithm = new SimplexNoise();
+                break;
+            case AlgorithmType.WorleyNoise:
+                algorithm = new WorleyNoise();
+                break;
+            default:
+                terrain.terrainData.heightmapResolution = 1;
+                return;
         }
 
-        heightMap = algorithm.GenerateHeightMap();
+        heightMap = algorithm.GenerateHeightMap(width, height);
         heightMap.NormalizeArray(width, height);
 
         ApplyTexture();
@@ -41,7 +50,7 @@ public class TerrainGenerationManager : MonoBehaviour
     {
         Rect rect = new Rect();
         rect.min = new Vector2(0, 0);
-        rect.max = new Vector2(width / 2, height / 2);
+        rect.max = new Vector2(width, height);
 
         GUI.DrawTexture(rect, texture);
     }

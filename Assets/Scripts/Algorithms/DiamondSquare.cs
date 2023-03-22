@@ -4,11 +4,11 @@ public class DiamondSquare : Algorithm
 
     public float frequency = 1.0f;
 
-    private int _terrainPoints = 512;
+    private int _terrainPoints = 256;
     private float _roughness = 1f;
     private float _seed = 0; // an initial seed value for the corners of the data
 
-    public override float[,] GenerateHeightMap()
+    public override float[,] GenerateHeightMap(int width, int height)
     {
         //size of grid to generate, note this must be a
         //value 2^n+1
