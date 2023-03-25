@@ -1,29 +1,18 @@
+using System;
+
 public class DiamondSquare : Algorithm
 {
-    public int seed = 0;
-
-    public float frequency = 1.0f;
-
-    private int _terrainPoints = 256;
-    private float _roughness = 1f;
-    private float _seed = 0; // an initial seed value for the corners of the data
-
-    public override float[,] GenerateHeightMap(int width, int height)
+    public override float[,] GenerateHeightMap(int size)
     {
-        //size of grid to generate, note this must be a
-        //value 2^n+1
-        int DATA_SIZE = _terrainPoints + 1;  // must be a power of two plus one e.g. 33, 65, 128, etc
+        float[,] noise = new float[size + 1, size + 1];
 
-        float[,] data = new float[DATA_SIZE, DATA_SIZE];
-        data[0, 0] = data[0, DATA_SIZE - 1] = data[DATA_SIZE - 1, 0] =
-          data[DATA_SIZE - 1, DATA_SIZE - 1] = _seed;
+        noise[0, 0] = noise[0, size] = noise[size, 0] = noise[size, size] = 0;
 
-        float h = _roughness;//the range (-h -> +h) for the average offset - affects roughness
-        System.Random r = new System.Random();//for the new value in range of h
-                                //side length is distance of a single square side
-                                //or distance of diagonal in diamond
-
-        for (int sideLength = DATA_SIZE - 1;
+        Random r = new Random(); //for the new value in range of h
+                                 //side length is distance of a single square side
+                                 //or distance of diagonal in diamond
+        float h = 1f;
+        for (int sideLength = size;
             //side length must be >= 2 so we always have
             //a new value (if its 1 we overwrite existing values
             //on the last iteration)
@@ -38,20 +27,20 @@ public class DiamondSquare : Algorithm
             int halfSide = sideLength / 2;
 
             //generate the new square values
-            for (int x = 0; x < DATA_SIZE - 1; x += sideLength)
+            for (int x = 0; x < size; x += sideLength)
             {
-                for (int y = 0; y < DATA_SIZE - 1; y += sideLength)
+                for (int y = 0; y < size; y += sideLength)
                 {
                     //x, y is upper left corner of square
                     //calculate average of existing corners
-                    float avg = data[x, y] + //top left
-                    data[x + sideLength, y] +//top right
-                    data[x, y + sideLength] + //lower left
-                    data[x + sideLength, y + sideLength];//lower right
+                    float avg = noise[x, y] + //top left
+                    noise[x + sideLength, y] +//top right
+                    noise[x, y + sideLength] + //lower left
+                    noise[x + sideLength, y + sideLength];//lower right
                     avg /= 4.0f;
 
                     //center is average plus random offset
-                    data[x + halfSide, y + halfSide] = (avg + ((float)r.NextDouble() * 2f * h) - h);
+                    noise[x + halfSide, y + halfSide] = avg + ((float)r.NextDouble() * 2f * h) - h;
                     //We calculate random value in range of 2h
                     //and then subtract h so the end value is
                     //in the range (-h, +h)
@@ -62,22 +51,22 @@ public class DiamondSquare : Algorithm
             //by half side
             //NOTE: if the data shouldn't wrap then x < DATA_SIZE
             //to generate the far edge values
-            for (int x = 0; x < DATA_SIZE - 1; x += halfSide)
+            for (int x = 0; x < size; x += halfSide)
             {
                 //and y is x offset by half a side, but moved by
                 //the full side length
                 //NOTE: if the data shouldn't wrap then y < DATA_SIZE
                 //to generate the far edge values
-                for (int y = (x + halfSide) % sideLength; y < DATA_SIZE - 1; y += sideLength)
+                for (int y = (x + halfSide) % sideLength; y < size; y += sideLength)
                 {
                     //x, y is center of diamond
                     //note we must use mod  and add DATA_SIZE for subtraction 
                     //so that we can wrap around the array to find the corners
                     float avg =
-                      data[(x - halfSide + DATA_SIZE) % DATA_SIZE, y] + //left of center
-                      data[(x + halfSide) % DATA_SIZE, y] + //right of center
-                      data[x, (y + halfSide) % DATA_SIZE] + //below center
-                      data[x, (y - halfSide + DATA_SIZE) % DATA_SIZE]; //above center
+                      noise[(x - halfSide + (size + 1)) % (size + 1), y] + //left of center
+                      noise[(x + halfSide) % (size + 1), y] + //right of center
+                      noise[x, (y + halfSide) % (size + 1)] + //below center
+                      noise[x, (y - halfSide + (size + 1)) % (size + 1)]; //above center
                     avg /= 4.0f;
 
                     //new value = average plus random offset
@@ -86,16 +75,17 @@ public class DiamondSquare : Algorithm
                     //in the range (-h, +h)
                     avg = avg + ((float)r.NextDouble() * 2f * h) - h;
                     //update value for center of diamond
-                    data[x, y] = avg;
+                    noise[x, y] = avg;
 
                     //wrap values on the edges, remove
                     //this and adjust loop condition above
                     //for non-wrapping values.
-                    if (x == 0) data[DATA_SIZE - 1, y] = avg;
-                    if (y == 0) data[x, DATA_SIZE - 1] = avg;
+                    if (x == 0) noise[size, y] = avg;
+                    if (y == 0) noise[x, size] = avg;
                 }
             }
         }
-        return data;
+
+        return noise;
     }
 }
