@@ -26,9 +26,6 @@ public class TerrainGenerationManager : MonoBehaviour
             case AlgorithmType.PerlinNoise: 
                 algorithm = new PerlinNoise();
                 break;
-            case AlgorithmType.SimplexNoise:
-                algorithm = new SimplexNoise();
-                break;
             case AlgorithmType.WorleyNoise:
                 algorithm = new WorleyNoise();
                 break;

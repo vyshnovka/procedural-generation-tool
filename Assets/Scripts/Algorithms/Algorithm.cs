@@ -5,8 +5,7 @@ public enum AlgorithmType
     None = 0,
     DiamondSquare = 1,
     PerlinNoise = 2,
-    SimplexNoise = 3,
-    WorleyNoise = 4,
+    WorleyNoise = 3,
 }
 
 public abstract class Algorithm
