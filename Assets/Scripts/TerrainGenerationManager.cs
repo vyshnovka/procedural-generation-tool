@@ -9,9 +9,7 @@ public class TerrainGenerationManager : MonoBehaviour
     [SerializeField]
     private Terrain terrain;
     [SerializeField]
-    protected int width = 512;
-    [SerializeField]
-    protected int height = 512;
+    private int size = 512;
 
     private Algorithm algorithm;
     private float[,] heightMap;
@@ -39,8 +37,8 @@ public class TerrainGenerationManager : MonoBehaviour
                 return;
         }
 
-        heightMap = algorithm.GenerateHeightMap(width, height);
-        heightMap.NormalizeArray(width, height);
+        heightMap = algorithm.GenerateHeightMap(size);
+        heightMap.NormalizeArray(size, size);
 
         ApplyTexture();
         GenerateTerrain();
@@ -50,18 +48,18 @@ public class TerrainGenerationManager : MonoBehaviour
     {
         Rect rect = new Rect();
         rect.min = new Vector2(0, 0);
-        rect.max = new Vector2(width, height);
+        rect.max = new Vector2(size, size);
 
         GUI.DrawTexture(rect, texture);
     }
 
     private void ApplyTexture()
     {
-        texture = new Texture2D(width, height);
+        texture = new Texture2D(size, size);
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < size; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < size; x++)
             {
                 float n = heightMap[x, y];
                 texture.SetPixel(x, y, new Color(n, n, n, 1));
@@ -73,8 +71,8 @@ public class TerrainGenerationManager : MonoBehaviour
 
     private void GenerateTerrain()
     {
-        this.terrain.terrainData.heightmapResolution = width + 1;
-        this.terrain.terrainData.size = new Vector3(width, 30, height);
+        this.terrain.terrainData.heightmapResolution = size + 1;
+        this.terrain.terrainData.size = new Vector3(size, 30, size);
         this.terrain.terrainData.SetHeights(0, 0, heightMap);
     }
 }

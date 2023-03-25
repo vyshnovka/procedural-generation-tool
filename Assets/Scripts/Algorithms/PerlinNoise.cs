@@ -7,11 +7,12 @@ using UnityEngine.UIElements;
 
 public class PerlinNoise : Noise
 {
-    public override float[,] GenerateHeightMap(int width, int height)
+    public override float[,] GenerateHeightMap(int size)
     {
-        float[,] noiseMap = new float[width, height];
-        float maxPossibleHeight = 0f;
+        int[] permutationTable = PermutationTable(size * 2);
+        float[,] noise = new float[size, size];
 
+        float maxPossibleHeight = 0f;
         int octaves = 6;
         float persistence = 1f;
         float amplitude = 5f;
@@ -19,12 +20,12 @@ public class PerlinNoise : Noise
 
         for (int i = 0; i < octaves; i++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < size; y++)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < size; x++)
                 {
-                    float sampleX = (float)x / width * frequency;
-                    float sampleY = (float)y / height * frequency;
+                    float sampleX = (float)x / size * frequency;
+                    float sampleY = (float)y / size * frequency;
 
                     int xi0 = (int)Math.Floor(sampleX) % 256;
                     int yi0 = (int)Math.Floor(sampleY) % 256;
@@ -34,10 +35,10 @@ public class PerlinNoise : Noise
                     float tx = sampleX - xi0;
                     float ty = sampleY - yi0;
 
-                    int aa = PermutationTable[PermutationTable[xi0] + yi0];
-                    int ab = PermutationTable[PermutationTable[xi0] + yi1];
-                    int ba = PermutationTable[PermutationTable[xi1] + yi0];
-                    int bb = PermutationTable[PermutationTable[xi1] + yi1];
+                    int aa = permutationTable[permutationTable[xi0] + yi0];
+                    int ab = permutationTable[permutationTable[xi0] + yi1];
+                    int ba = permutationTable[permutationTable[xi1] + yi0];
+                    int bb = permutationTable[permutationTable[xi1] + yi1];
 
                     float gradientX1 = Grad(aa, tx, ty);
                     float gradientX2 = Grad(ba, tx - 1f, ty);
@@ -51,7 +52,7 @@ public class PerlinNoise : Noise
                     float i2 = Lerp(gradientX3, gradientX4, u);
                     float final = Lerp(i1, i2, v);
 
-                    noiseMap[x, y] += final * amplitude;
+                    noise[x, y] += final * amplitude;
                 }
             }
 
@@ -60,15 +61,15 @@ public class PerlinNoise : Noise
             frequency *= 2f;
         }
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < size; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < size; x++)
             {
-                noiseMap[x, y] /= maxPossibleHeight;
+                noise[x, y] /= maxPossibleHeight;
             }
         }
 
-        return noiseMap;
+        return noise;
     }
 
     private float Grad(int hash, float x, float y)
