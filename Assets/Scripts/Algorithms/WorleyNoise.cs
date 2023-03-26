@@ -1,13 +1,51 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class WorleyNoise : Noise
+public class WorleyNoise : Algorithm
 {
-    // Working code, but it generates the noise that is too smooth.
+    public override float[,] GenerateHeightMap(int size)
+    {
+        float[,] noise = new float[size, size];
+
+        System.Random random = new();
+
+        int numCells = random.Next(4, size / 4);
+        float hardness = 1f;
+
+        Vector2[] points = new Vector2[numCells];
+
+        for (int i = 0; i < numCells; i++)
+        {
+            points[i] = new Vector2(random.Next(size), random.Next(size));
+        }
+
+        float maxDistance = Mathf.Sqrt(size * size + size * size);
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float[] distances = new float[numCells];
+                float closestDistance = maxDistance;
+
+                for (int i = 0; i < numCells; i++)
+                {
+                    distances[i] = Vector2.Distance(new Vector2(x, y), points[i]);
+                    if (distances[i] < closestDistance)
+                    {
+                        closestDistance = distances[i];
+                    }
+                }
+
+                float noiseValue = closestDistance / maxDistance;
+                noise[x, y] = noiseValue * noiseValue * (hardness - 2 * noiseValue);
+            }
+        }
+
+        return noise;
+    }
+
+    // Working code, but generated noise is too smooth.
     //public override float[,] GenerateHeightMap(int size)
     //{
     //    int[] permutationTable = PermutationTable(size * 2);
@@ -133,46 +171,4 @@ public class WorleyNoise : Noise
 
     //    return noise;
     //}
-
-    public override float[,] GenerateHeightMap(int size)
-    {
-        //TODO: make it use permutation table.
-        int[] permutationTable = PermutationTable(size * 2);
-        float[,] noise = new float[size, size];
-
-        //TODO: maybe make this a random.
-        int numCells = 10;
-        System.Random random = new System.Random();
-
-        Vector2[] points = new Vector2[numCells];
-        for (int i = 0; i < numCells; i++)
-        {
-            points[i] = new Vector2(random.Next(size), random.Next(size));
-        }
-
-        float maxDistance = Mathf.Sqrt(size * size + size * size);
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                float[] distances = new float[numCells];
-                float closestDistance = maxDistance;
-
-                for (int i = 0; i < numCells; i++)
-                {
-                    distances[i] = Vector2.Distance(new Vector2(x, y), points[i]);
-                    if (distances[i] < closestDistance)
-                    {
-                        closestDistance = distances[i];
-                    }
-                }
-
-                float noiseValue = closestDistance / maxDistance;
-                noise[x, y] = noiseValue * noiseValue * (3 - 2 * noiseValue);
-            }
-        }
-
-        return noise;
-    }
 }

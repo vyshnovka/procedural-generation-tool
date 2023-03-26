@@ -1,15 +1,15 @@
 using System;
 
-public class PerlinNoise : Noise
+public class PerlinNoise : Algorithm
 {
     public override float[,] GenerateHeightMap(int size)
     {
-        int[] permutationTable = PermutationTable(size * 2);
         float[,] noise = new float[size, size];
 
-        float maxPossibleHeight = 0f;
+        int[] permutationTable = GetPermutationTable(size * 2);
+
         int octaves = 6;
-        float persistence = 1f;
+        float persistence = 0.75f;
         float amplitude = 5f;
         float frequency = 1f;
 
@@ -51,37 +51,43 @@ public class PerlinNoise : Noise
                 }
             }
 
-            maxPossibleHeight += amplitude;
             amplitude *= persistence;
             frequency *= 2f;
-        }
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                noise[x, y] /= maxPossibleHeight;
-            }
         }
 
         return noise;
     }
 
+    private int[] GetPermutationTable(int size)
+    {
+        int[] permutationTable = new int[size];
+
+        for (int i = 0; i < size; i++)
+        {
+            permutationTable[i] = i;
+        }
+
+        Random random = new();
+
+        for (int i = 255; i >= 0; i--)
+        {
+            int j = random.Next(i + 1);
+            (permutationTable[j], permutationTable[i]) = (permutationTable[i], permutationTable[j]);
+        }
+
+        return permutationTable;
+    }
+
     private float Grad(int hash, float x, float y)
     {
-        switch (hash & 3)
+        return (hash & 3) switch
         {
-            case 0:
-                return x + y;
-            case 1:
-                return -x + y;
-            case 2:
-                return x - y;
-            case 3:
-                return -x - y;
-            default:
-                return 0;
-        }
+            0 => x + y,
+            1 => -x + y,
+            2 => x - y,
+            3 => -x - y,
+            _ => 0,
+        };
     }
 
     private float Smooth(float t)

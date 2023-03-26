@@ -10,27 +10,29 @@ public class TerrainGenerationManager : MonoBehaviour
     private Terrain terrain;
     [SerializeField]
     private int size = 512;
+    [SerializeField]
+    private Gradient gradient;
 
-    private Algorithm algorithm;
     private float[,] heightMap;
-
+    private Algorithm algorithm;
     private Texture2D texture;
 
     public void DisplayResult()
     {
         switch (algorithmType)
         {
-            case AlgorithmType.DiamondSquare:
-                algorithm = new DiamondSquare();
-                break;
             case AlgorithmType.PerlinNoise: 
                 algorithm = new PerlinNoise();
+                break;
+            case AlgorithmType.DiamondSquare:
+                algorithm = new DiamondSquare();
                 break;
             case AlgorithmType.WorleyNoise:
                 algorithm = new WorleyNoise();
                 break;
             default:
                 terrain.terrainData.heightmapResolution = 1;
+                texture = new Texture2D(size, size);
                 return;
         }
 
@@ -39,13 +41,16 @@ public class TerrainGenerationManager : MonoBehaviour
 
         ApplyTexture();
         GenerateTerrain();
+        PaintTerrain();
     }
 
     void OnGUI()
     {
-        Rect rect = new Rect();
-        rect.min = new Vector2(0, 0);
-        rect.max = new Vector2(size, size);
+        Rect rect = new()
+        {
+            min = new Vector2(0, 0),
+            max = new Vector2(size, size)
+        };
 
         GUI.DrawTexture(rect, texture);
     }
@@ -68,8 +73,13 @@ public class TerrainGenerationManager : MonoBehaviour
 
     private void GenerateTerrain()
     {
-        this.terrain.terrainData.heightmapResolution = size + 1;
-        this.terrain.terrainData.size = new Vector3(size, 30, size);
-        this.terrain.terrainData.SetHeights(0, 0, heightMap);
+        terrain.terrainData.heightmapResolution = size + 1;
+        terrain.terrainData.size = new Vector3(size, 30, size);
+        terrain.terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    private void PaintTerrain()
+    {
+        //TODO paint somehow depending on height?
     }
 }
