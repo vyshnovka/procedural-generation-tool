@@ -21,9 +21,9 @@ public class WorleyNoise : Algorithm
 
         float maxDistance = Mathf.Sqrt(size * size + size * size);
 
-        for (int y = 0; y < size; y++)
+        for (int x = 0; x < size; x++)
         {
-            for (int x = 0; x < size; x++)
+            for (int y = 0; y < size; y++)
             {
                 float[] distances = new float[numCells];
                 float closestDistance = maxDistance;

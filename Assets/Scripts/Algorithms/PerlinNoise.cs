@@ -15,9 +15,9 @@ public class PerlinNoise : Algorithm
 
         for (int i = 0; i < octaves; i++)
         {
-            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
             {
-                for (int x = 0; x < size; x++)
+                for (int y = 0; y < size; y++)
                 {
                     float sampleX = (float)x / size * frequency;
                     float sampleY = (float)y / size * frequency;
