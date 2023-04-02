@@ -96,8 +96,6 @@ public class TerrainGenerationManager : MonoBehaviour
 
     private void PaintTerrain()
     {
-        //TODO clean up the code!!!
-
         // Get the terrain's heightmap.
         float[,] heights = terrain.terrainData.GetHeights(0, 0, terrain.terrainData.heightmapResolution, terrain.terrainData.heightmapResolution);
 
