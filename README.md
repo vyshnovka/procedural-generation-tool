@@ -1,5 +1,18 @@
 # Procedural Terrain Generation
-Some algorithms for procedural terrain generation on Unity.
+
+The project contains some algorithms for procedural terrain generation implemented on C# for Unity. Algorithms return a `float[,]` heightmap, then generate a texture and a terrain based on it.
+
+### Perlin Noise
+
+Perlin noise is a type of gradient noise. It is most basic yet most customizable algorithm. Proper settings allow to achieve absolutely unique textures.
+
+### Diamond-Square
+
+Diamond-Square algorithm is suitable for generating realistic-looking landscapes. It was once described as flawed due to noticeable vertical and horizontal creases at the edges, but who cares if it still generates a decent result?
+
+### Worley Noise
+
+Worley noise comes close to simulating textures of stone, water, or biological cells. Seriously, doesn't it look like sea waves?
 
  ## Tools
 
