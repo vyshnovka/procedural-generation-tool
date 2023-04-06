@@ -4,6 +4,7 @@ public enum AlgorithmType
     PerlinNoise = 1,
     DiamondSquare = 2,
     WorleyNoise = 3,
+    RandomNoise = 4,
 }
 
 public enum GradientType

@@ -46,6 +46,9 @@ public class TerrainGenerationManager : MonoBehaviour
             case AlgorithmType.WorleyNoise:
                 algorithm = new WorleyNoise();
                 break;
+            case AlgorithmType.RandomNoise:
+                algorithm = new RandomNoise();
+                break;
             default:
                 terrain.terrainData.heightmapResolution = 1;
                 texture = new Texture2D(size, size);
@@ -65,7 +68,7 @@ public class TerrainGenerationManager : MonoBehaviour
         Rect rect = new()
         {
             min = new Vector2(0, 0),
-            max = new Vector2(size, size)
+            max = new Vector2(256, 256)
         };
 
         GUI.DrawTexture(rect, texture);
