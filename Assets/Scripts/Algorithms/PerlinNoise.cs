@@ -58,6 +58,7 @@ public class PerlinNoise : Algorithm
         return noise;
     }
 
+    /// <summary>Generate permutation table of a given size and fill it with random values.</summary>
     private int[] GetPermutationTable(int size)
     {
         int[] permutationTable = new int[size];
