@@ -11,7 +11,7 @@ public class TerrainGenerationManager : MonoBehaviour
     [SerializeField]
     private Terrain terrain;
     [SerializeField]
-    [Tooltip("Values below 128 are not recommended.")]
+    [Tooltip("Values below 128 are not recommended as it may lead to low texture quality.")]
     private Size size = Size._256;
     [SerializeField]
     private GradientType gradientType;
@@ -122,11 +122,10 @@ public class TerrainGenerationManager : MonoBehaviour
                 gradient = water;
                 break;
             default:
-                gradient = new();
                 break;
         }
 
-        // Loop through each point on the terrain and set the color based on the height.
+        // Loop through each point on terrain and set color depending on height.
         for (int x = 0; x < terrain.terrainData.heightmapResolution; x++)
         {
             for (int y = 0; y < terrain.terrainData.heightmapResolution; y++)

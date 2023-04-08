@@ -1,3 +1,4 @@
+/// <summary>Algorithm for terrain generation.</summary>
 public enum AlgorithmType
 {
     None = 0,
@@ -7,6 +8,7 @@ public enum AlgorithmType
     RandomNoise = 4,
 }
 
+/// <summary>Colors to apply to terrain depending on height.</summary>
 public enum GradientType
 {
     Grayscale = 0,
@@ -14,6 +16,7 @@ public enum GradientType
     Water = 2,
 }
 
+/// <summary>Size of resulting terrain and texture.</summary>
 public enum Size
 {
     _32 = 32,
