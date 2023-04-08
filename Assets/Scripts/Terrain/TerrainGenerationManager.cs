@@ -97,7 +97,7 @@ public class TerrainGenerationManager : MonoBehaviour
     private void GenerateTerrain()
     {
         terrain.terrainData.heightmapResolution = maxSize;
-        terrain.terrainData.size = new Vector3(maxSize, 30, maxSize);
+        terrain.terrainData.size = new Vector3(maxSize, maxSize / 10, maxSize);
         terrain.terrainData.SetHeights(0, 0, heightMap);
     }
 
