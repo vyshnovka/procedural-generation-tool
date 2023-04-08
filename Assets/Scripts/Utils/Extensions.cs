@@ -1,5 +1,6 @@
 public static class Extensions
 {
+    /// <summary>Normalize float array with given <paramref name="width"/> and <paramref name="height"/>.</summary>
     public static float[,] NormalizeArray(this float[,] arr, int width, int height)
     {
         float min = float.PositiveInfinity;

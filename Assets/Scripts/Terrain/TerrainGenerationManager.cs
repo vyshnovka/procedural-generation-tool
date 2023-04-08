@@ -1,4 +1,5 @@
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class TerrainGenerationManager : MonoBehaviour
@@ -10,9 +11,12 @@ public class TerrainGenerationManager : MonoBehaviour
     [SerializeField]
     private Terrain terrain;
     [SerializeField]
-    private int size = 512;
+    [Tooltip("Values below 128 are not recommended.")]
+    private Size size = Size._256;
     [SerializeField]
     private GradientType gradientType;
+    [SerializeField]
+    private Texture2D texture;
 
     [Header("Gradients")]
     [SerializeField]
@@ -23,18 +27,25 @@ public class TerrainGenerationManager : MonoBehaviour
     private Gradient water;
 
     private float[,] heightMap;
+    private int maxSize;
     private Algorithm algorithm;
-    private Texture2D texture;
     private Gradient gradient;
+
+    private string texturePath;
 
     void Start()
     {
-        terrain.terrainData.heightmapResolution = 1;
-        texture = new Texture2D(size, size);
+        maxSize = (int)size;
+        texturePath = AssetDatabase.GetAssetPath(texture);
+
+        ResetTerrain();
     }
 
+    /// <summary>Generate terrain using corresponding algorithm and apply texture to it.</summary>
     public void DisplayResult()
     {
+        maxSize = (int)size;
+
         switch (algorithmType)
         {
             case AlgorithmType.PerlinNoise: 
@@ -50,37 +61,29 @@ public class TerrainGenerationManager : MonoBehaviour
                 algorithm = new RandomNoise();
                 break;
             default:
-                terrain.terrainData.heightmapResolution = 1;
-                texture = new Texture2D(size, size);
+                ResetTerrain();
                 return;
         }
 
-        heightMap = algorithm.GenerateHeightMap(size);
-        heightMap.NormalizeArray(size, size);
+        heightMap = algorithm.GenerateHeightMap(maxSize);
+        heightMap.NormalizeArray(maxSize, maxSize);
 
-        ApplyTexture();
         GenerateTerrain();
+        ApplyTexture();
         PaintTerrain();
     }
 
-    void OnGUI()
-    {
-        Rect rect = new()
-        {
-            min = new Vector2(0, 0),
-            max = new Vector2(256, 256)
-        };
-
-        GUI.DrawTexture(rect, texture);
-    }
-
+    /// <summary>Apply generated texture pixel by pixel.</summary>
     private void ApplyTexture()
     {
-        texture = new Texture2D(size, size);
+        // Reimport texture with corresponding max size.
+        TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
+        importer.maxTextureSize = maxSize;
+        AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
 
-        for (int x = 0; x < size; x++)
+        for (int x = 0; x < maxSize; x++)
         {
-            for (int y = 0; y < size; y++)
+            for (int y = 0; y < maxSize; y++)
             {
                 float n = heightMap[x, y];
                 texture.SetPixel(x, y, new Color(n, n, n, 1));
@@ -90,19 +93,19 @@ public class TerrainGenerationManager : MonoBehaviour
         texture.Apply();
     }
 
+    /// <summary>Set terrain heights.</summary>
     private void GenerateTerrain()
     {
-        terrain.terrainData.heightmapResolution = size + 1;
-        terrain.terrainData.size = new Vector3(size, 30, size);
+        terrain.terrainData.heightmapResolution = maxSize;
+        terrain.terrainData.size = new Vector3(maxSize, 30, maxSize);
         terrain.terrainData.SetHeights(0, 0, heightMap);
     }
 
+    /// <summary>Paint terrain pixel by pixel depending on its height.</summary>
     private void PaintTerrain()
     {
-        // Get the terrain's heightmap.
         float[,] heights = terrain.terrainData.GetHeights(0, 0, terrain.terrainData.heightmapResolution, terrain.terrainData.heightmapResolution);
 
-        // Get the terrain's texture data.
         TerrainLayer[] terrainLayers = terrain.terrainData.terrainLayers;
         int textureResolution = terrain.terrainData.alphamapResolution;
         int textureCount = terrainLayers.Length;
@@ -131,7 +134,6 @@ public class TerrainGenerationManager : MonoBehaviour
                 float height = heights[x, y];
                 Color color = gradient.Evaluate(height);
 
-                // Set the texture colors.
                 float[] textureValues = new float[textureCount];
                 for (int i = 0; i < textureCount; i++)
                 {
@@ -144,10 +146,9 @@ public class TerrainGenerationManager : MonoBehaviour
                     }
                 }
 
-                // Find the maximum texture value.
                 float maxTextureValue = textureValues.Max();
 
-                // Set the texture colors based on the gradient color.
+                // Set colors based on corresponding gradient.
                 for (int i = 0; i < textureCount; i++)
                 {
                     if (terrainLayers[i].diffuseTexture != null && terrainLayers[i].diffuseTexture.isReadable)
@@ -156,18 +157,25 @@ public class TerrainGenerationManager : MonoBehaviour
                         float textureValue = textureColor.grayscale;
                         if (textureValue == maxTextureValue)
                         {
-                            terrainLayers[i].diffuseTexture.SetPixel(y, x, color); // Why the hell is it inverted?..
+                            terrainLayers[i].diffuseTexture.SetPixel(y, x, color);
                         }
                     }
                 }
             }
         }
 
-        // Apply the texture changes.
+        // Update all terrain layers.
         for (int i = 0; i < textureCount; i++)
         {
-            terrainLayers[i].tileSize = new Vector2(size, size);
+            terrainLayers[i].tileSize = new Vector2(maxSize, maxSize);
             terrainLayers[i].diffuseTexture.Apply();
         }
+    }
+
+    /// <summary>Reset terrain and texture data.</summary>
+    private void ResetTerrain()
+    {
+        terrain.terrainData.heightmapResolution = maxSize;
+        AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
     }
 }

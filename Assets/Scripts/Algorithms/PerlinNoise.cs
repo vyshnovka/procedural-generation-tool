@@ -6,7 +6,7 @@ public class PerlinNoise : Algorithm
     {
         float[,] noise = new float[size, size];
 
-        int[] permutationTable = GetPermutationTable(size * 2);
+        int[] permutationTable = GetPermutationTable(size);
 
         int octaves = 6;
         float persistence = 0.75f;
@@ -22,10 +22,10 @@ public class PerlinNoise : Algorithm
                     float sampleX = (float)x / size * frequency;
                     float sampleY = (float)y / size * frequency;
 
-                    int xi0 = (int)Math.Floor(sampleX) % 256;
-                    int yi0 = (int)Math.Floor(sampleY) % 256;
-                    int xi1 = (xi0 + 1) % 256;
-                    int yi1 = (yi0 + 1) % 256;
+                    int xi0 = (int)Math.Floor(sampleX) % size;
+                    int yi0 = (int)Math.Floor(sampleY) % size;
+                    int xi1 = (xi0 + 1) % size;
+                    int yi1 = (yi0 + 1) % size;
 
                     float tx = sampleX - xi0;
                     float ty = sampleY - yi0;
@@ -64,14 +64,14 @@ public class PerlinNoise : Algorithm
 
         for (int i = 0; i < size; i++)
         {
-            permutationTable[i] = i;
+            permutationTable[i] = i / 2;
         }
 
         Random random = new();
 
-        for (int i = 255; i >= 0; i--)
+        for (int i = size - 1; i >= 0; i--)
         {
-            int j = random.Next(i + 1);
+            int j = random.Next(i);
             (permutationTable[j], permutationTable[i]) = (permutationTable[i], permutationTable[j]);
         }
 
