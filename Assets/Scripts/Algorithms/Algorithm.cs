@@ -9,10 +9,22 @@ public enum AlgorithmType
 
 public enum GradientType
 {
-    None = 0,
-    Grayscale = 1,
-    Mountains = 2,
-    Water = 3,
+    Grayscale = 0,
+    Mountains = 1,
+    Water = 2,
+}
+
+public enum Size
+{
+    _32 = 32,
+    _64 = 64,
+    _128 = 128,
+    _256 = 256,
+    _512 = 512,
+    _1024 = 1024,
+    _2048 = 2048,
+    _4096 = 4096,
+    _8192 = 8192,
 }
 
 public abstract class Algorithm
