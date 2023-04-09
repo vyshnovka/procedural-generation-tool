@@ -3,6 +3,12 @@
 The project contains some algorithms for procedural terrain generation implemented on C# for Unity.    
 Algorithms generate a heightmap, then a texture and a terrain based on it.
 
+### White Noise
+
+White noise represents a set of random values with no additional processing.
+
+<img width="731" alt="white" src="https://user-images.githubusercontent.com/70700078/230769956-02339661-0447-486e-bce3-3e85ea7109d5.png">
+
 ### Perlin Noise
 
 Perlin noise is a type of gradient noise. It is most basic yet most customizable algorithm. Proper settings allow to achieve absolutely unique textures.
