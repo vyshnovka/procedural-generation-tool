@@ -2,10 +2,10 @@
 public enum AlgorithmType
 {
     None = 0,
-    PerlinNoise = 1,
-    DiamondSquare = 2,
-    WorleyNoise = 3,
-    RandomNoise = 4,
+    WhiteNoise = 1,
+    PerlinNoise = 2,
+    DiamondSquare = 3,
+    WorleyNoise = 4,
 }
 
 /// <summary>Colors to apply to terrain depending on height.</summary>

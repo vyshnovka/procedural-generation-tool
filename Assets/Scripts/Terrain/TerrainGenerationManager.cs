@@ -48,6 +48,9 @@ public class TerrainGenerationManager : MonoBehaviour
 
         switch (algorithmType)
         {
+            case AlgorithmType.WhiteNoise:
+                algorithm = new WhiteNoise();
+                break;
             case AlgorithmType.PerlinNoise: 
                 algorithm = new PerlinNoise();
                 break;
@@ -56,9 +59,6 @@ public class TerrainGenerationManager : MonoBehaviour
                 break;
             case AlgorithmType.WorleyNoise:
                 algorithm = new WorleyNoise();
-                break;
-            case AlgorithmType.RandomNoise:
-                algorithm = new RandomNoise();
                 break;
             default:
                 ResetTerrain();

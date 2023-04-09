@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomNoise : Algorithm
+public class WhiteNoise : Algorithm
 {
     public override float[,] GenerateHeightMap(int size)
     {
