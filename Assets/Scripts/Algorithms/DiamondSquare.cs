@@ -20,7 +20,7 @@ public class DiamondSquare : Algorithm
             {
                 for (int y = 0; y < size; y += sideLength)
                 {
-                    float avg = noise[x, y] + noise[x + sideLength, y] +noise[x, y + sideLength] +noise[x + sideLength, y + sideLength];
+                    float avg = noise[x, y] + noise[x + sideLength, y] + noise[x, y + sideLength] + noise[x + sideLength, y + sideLength];
                     avg /= 4.0f;
 
                     noise[x + halfSide, y + halfSide] = avg + ((float)random.NextDouble() * 2f * range) - range;

@@ -51,7 +51,7 @@ public class TerrainGenerationManager : MonoBehaviour
             case AlgorithmType.WhiteNoise:
                 algorithm = new WhiteNoise();
                 break;
-            case AlgorithmType.PerlinNoise: 
+            case AlgorithmType.PerlinNoise:
                 algorithm = new PerlinNoise();
                 break;
             case AlgorithmType.DiamondSquare:
