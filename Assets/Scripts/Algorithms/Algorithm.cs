@@ -1,4 +1,7 @@
-public abstract class Algorithm
+namespace TerrainGeneration.Algorithms
 {
-    public abstract float[,] GenerateHeightMap(int size);
+    public abstract class Algorithm
+    {
+        public abstract float[,] GenerateHeightMap(int size);
+    }
 }

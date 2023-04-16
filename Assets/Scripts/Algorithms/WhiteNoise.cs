@@ -1,19 +1,22 @@
-public class WhiteNoise : Algorithm
+namespace TerrainGeneration.Algorithms
 {
-    public override float[,] GenerateHeightMap(int size)
+    public class WhiteNoise : Algorithm
     {
-        float[,] noise = new float[size, size];
-
-        System.Random random = new();
-
-        for (int x = 0; x < size; x++)
+        public override float[,] GenerateHeightMap(int size)
         {
-            for (int y = 0; y < size; y++)
-            {
-                noise[x, y] = (float)random.NextDouble();
-            }
-        }
+            float[,] noise = new float[size, size];
 
-        return noise;
+            System.Random random = new();
+
+            for (int x = 0; x < size; x++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    noise[x, y] = (float)random.NextDouble();
+                }
+            }
+
+            return noise;
+        }
     }
 }

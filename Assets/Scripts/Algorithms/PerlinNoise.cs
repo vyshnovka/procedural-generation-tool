@@ -1,103 +1,106 @@
 using System;
 
-public class PerlinNoise : Algorithm
+namespace TerrainGeneration.Algorithms
 {
-    public override float[,] GenerateHeightMap(int size)
+    public class PerlinNoise : Algorithm
     {
-        float[,] noise = new float[size, size];
-
-        int[] permutationTable = GetPermutationTable(size);
-
-        int octaves = 6;
-        float persistence = 0.75f;
-        float amplitude = 5f;
-        float frequency = 1f;
-
-        for (int i = 0; i < octaves; i++)
+        public override float[,] GenerateHeightMap(int size)
         {
-            for (int x = 0; x < size; x++)
+            float[,] noise = new float[size, size];
+
+            int[] permutationTable = GetPermutationTable(size);
+
+            int octaves = 6;
+            float persistence = 0.75f;
+            float amplitude = 5f;
+            float frequency = 1f;
+
+            for (int i = 0; i < octaves; i++)
             {
-                for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
                 {
-                    float sampleX = (float)x / size * frequency;
-                    float sampleY = (float)y / size * frequency;
+                    for (int y = 0; y < size; y++)
+                    {
+                        float sampleX = (float)x / size * frequency;
+                        float sampleY = (float)y / size * frequency;
 
-                    int xi0 = (int)Math.Floor(sampleX) % size;
-                    int yi0 = (int)Math.Floor(sampleY) % size;
-                    int xi1 = (xi0 + 1) % size;
-                    int yi1 = (yi0 + 1) % size;
+                        int xi0 = (int)Math.Floor(sampleX) % size;
+                        int yi0 = (int)Math.Floor(sampleY) % size;
+                        int xi1 = (xi0 + 1) % size;
+                        int yi1 = (yi0 + 1) % size;
 
-                    float tx = sampleX - xi0;
-                    float ty = sampleY - yi0;
+                        float tx = sampleX - xi0;
+                        float ty = sampleY - yi0;
 
-                    int aa = permutationTable[permutationTable[xi0] + yi0];
-                    int ab = permutationTable[permutationTable[xi0] + yi1];
-                    int ba = permutationTable[permutationTable[xi1] + yi0];
-                    int bb = permutationTable[permutationTable[xi1] + yi1];
+                        int aa = permutationTable[permutationTable[xi0] + yi0];
+                        int ab = permutationTable[permutationTable[xi0] + yi1];
+                        int ba = permutationTable[permutationTable[xi1] + yi0];
+                        int bb = permutationTable[permutationTable[xi1] + yi1];
 
-                    float gradientX1 = Grad(aa, tx, ty);
-                    float gradientX2 = Grad(ba, tx - 1f, ty);
-                    float gradientX3 = Grad(ab, tx, ty - 1f);
-                    float gradientX4 = Grad(bb, tx - 1f, ty - 1f);
+                        float gradientX1 = Grad(aa, tx, ty);
+                        float gradientX2 = Grad(ba, tx - 1f, ty);
+                        float gradientX3 = Grad(ab, tx, ty - 1f);
+                        float gradientX4 = Grad(bb, tx - 1f, ty - 1f);
 
-                    float u = Smooth(tx);
-                    float v = Smooth(ty);
+                        float u = Smooth(tx);
+                        float v = Smooth(ty);
 
-                    float i1 = Lerp(gradientX1, gradientX2, u);
-                    float i2 = Lerp(gradientX3, gradientX4, u);
-                    float final = Lerp(i1, i2, v);
+                        float i1 = Lerp(gradientX1, gradientX2, u);
+                        float i2 = Lerp(gradientX3, gradientX4, u);
+                        float final = Lerp(i1, i2, v);
 
-                    noise[x, y] += final * amplitude;
+                        noise[x, y] += final * amplitude;
+                    }
                 }
+
+                amplitude *= persistence;
+                frequency *= 2f;
             }
 
-            amplitude *= persistence;
-            frequency *= 2f;
+            return noise;
         }
 
-        return noise;
-    }
-
-    /// <summary>Generate permutation table of a given size and fill it with random values.</summary>
-    private int[] GetPermutationTable(int size)
-    {
-        int[] permutationTable = new int[size];
-
-        for (int i = 0; i < size; i++)
+        /// <summary>Generate permutation table of a given size and fill it with random values.</summary>
+        private int[] GetPermutationTable(int size)
         {
-            permutationTable[i] = i / 2;
+            int[] permutationTable = new int[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                permutationTable[i] = i / 2;
+            }
+
+            Random random = new();
+
+            for (int i = size - 1; i >= 0; i--)
+            {
+                int j = random.Next(i);
+                (permutationTable[j], permutationTable[i]) = (permutationTable[i], permutationTable[j]);
+            }
+
+            return permutationTable;
         }
 
-        Random random = new();
-
-        for (int i = size - 1; i >= 0; i--)
+        private float Grad(int hash, float x, float y)
         {
-            int j = random.Next(i);
-            (permutationTable[j], permutationTable[i]) = (permutationTable[i], permutationTable[j]);
+            return (hash & 3) switch
+            {
+                0 => x + y,
+                1 => -x + y,
+                2 => x - y,
+                3 => -x - y,
+                _ => 0,
+            };
         }
 
-        return permutationTable;
-    }
-
-    private float Grad(int hash, float x, float y)
-    {
-        return (hash & 3) switch
+        private float Smooth(float t)
         {
-            0 => x + y,
-            1 => -x + y,
-            2 => x - y,
-            3 => -x - y,
-            _ => 0,
-        };
-    }
+            return t * t * t * (t * (t * 6f - 15f) + 10f);
+        }
 
-    private float Smooth(float t)
-    {
-        return t * t * t * (t * (t * 6f - 15f) + 10f);
-    }
-
-    private float Lerp(float a, float b, float t)
-    {
-        return a + (b - a) * t;
+        private float Lerp(float a, float b, float t)
+        {
+            return a + (b - a) * t;
+        }
     }
 }
