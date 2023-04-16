@@ -20,13 +20,13 @@ namespace TerrainGeneration.Algorithms
                 points[i] = new Vector2(random.Next(size), random.Next(size));
             }
 
+            float[] distances = new float[numCells];
             float maxDistance = Mathf.Sqrt(size * size + size * size);
 
             for (int x = 0; x < size; x++)
             {
                 for (int y = 0; y < size; y++)
                 {
-                    float[] distances = new float[numCells];
                     float closestDistance = maxDistance;
 
                     for (int i = 0; i < numCells; i++)
