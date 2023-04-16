@@ -1,3 +1,5 @@
+using System;
+
 namespace TerrainGeneration.Algorithms
 {
     public class WhiteNoise : Algorithm
@@ -6,7 +8,7 @@ namespace TerrainGeneration.Algorithms
         {
             float[,] noise = new float[size, size];
 
-            System.Random random = new();
+            Random random = new();
 
             for (int x = 0; x < size; x++)
             {
