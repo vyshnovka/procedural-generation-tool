@@ -1,4 +1,5 @@
-using UnityEngine;
+using System;
+using System.Numerics;
 
 namespace TerrainGeneration.Algorithms
 {
@@ -21,7 +22,7 @@ namespace TerrainGeneration.Algorithms
             }
 
             float[] distances = new float[numCells];
-            float maxDistance = Mathf.Sqrt(size * size + size * size);
+            float maxDistance = (float)Math.Sqrt(size * size + size * size);
 
             for (int x = 0; x < size; x++)
             {
