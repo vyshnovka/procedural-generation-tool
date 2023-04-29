@@ -10,7 +10,7 @@ namespace TerrainGeneration
     public class TerrainGenerationManager : MonoBehaviour
     {
         [SerializeField]
-        private AlgorithmType algorithmType;
+        private AlgorithmType algorithmType = AlgorithmType.None;
 
         [Header("Terrain Data")]
         [SerializeField]
@@ -19,7 +19,7 @@ namespace TerrainGeneration
         [Tooltip("Values below 128 are not recommended as it may lead to low texture quality.")]
         private Size size = Size._256;
         [SerializeField]
-        private GradientType gradientType;
+        private GradientType gradientType = GradientType.Grayscale;
         [SerializeField]
         private Texture2D texture;
 
