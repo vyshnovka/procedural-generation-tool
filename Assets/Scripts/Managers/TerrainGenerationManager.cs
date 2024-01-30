@@ -4,11 +4,14 @@ using UnityEngine;
 using TerrainGeneration.Algorithms;
 using Utils;
 using SharedDefs;
+using System;
 
 namespace TerrainGeneration
 {
     public class TerrainGenerationManager : MonoBehaviour
     {
+        public static event Action<int> TerrainSizeChanged;
+
         [SerializeField]
         private AlgorithmType algorithmType = AlgorithmType.None;
 
@@ -32,7 +35,11 @@ namespace TerrainGeneration
         private Gradient water;
 
         private float[,] heightMap;
-        private int maxSize;
+        public int TerrainSize
+        {
+            get { return (int)size; }
+            set { TerrainSizeChanged?.Invoke((int)size); }
+        }
         private Algorithm algorithm;
         private Gradient gradient;
 
@@ -40,7 +47,7 @@ namespace TerrainGeneration
 
         void Start()
         {
-            maxSize = (int)size;
+            TerrainSize = (int)size;
             texturePath = AssetDatabase.GetAssetPath(texture);
 
             ResetTerrain();
@@ -49,7 +56,7 @@ namespace TerrainGeneration
         /// <summary>Generate terrain using corresponding algorithm and apply texture to it.</summary>
         public void DisplayResult()
         {
-            maxSize = (int)size;
+            TerrainSize = (int)size;
 
             switch (algorithmType)
             {
@@ -70,8 +77,8 @@ namespace TerrainGeneration
                     return;
             }
 
-            heightMap = algorithm.GenerateHeightMap(maxSize);
-            heightMap.NormalizeArray(maxSize, maxSize);
+            heightMap = algorithm.GenerateHeightMap(TerrainSize);
+            heightMap.NormalizeArray(TerrainSize, TerrainSize);
 
             GenerateTerrain();
             ApplyTexture();
@@ -83,12 +90,12 @@ namespace TerrainGeneration
         {
             // Reimport texture with corresponding max size.
             TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
-            importer.maxTextureSize = maxSize;
+            importer.maxTextureSize = TerrainSize;
             AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
 
-            for (int x = 0; x < maxSize; x++)
+            for (int x = 0; x < TerrainSize; x++)
             {
-                for (int y = 0; y < maxSize; y++)
+                for (int y = 0; y < TerrainSize; y++)
                 {
                     float n = heightMap[x, y];
                     texture.SetPixel(x, y, new Color(n, n, n, 1));
@@ -101,8 +108,8 @@ namespace TerrainGeneration
         /// <summary>Set terrain heights.</summary>
         private void GenerateTerrain()
         {
-            terrain.terrainData.heightmapResolution = maxSize;
-            terrain.terrainData.size = new Vector3(maxSize, maxSize / 10, maxSize);
+            terrain.terrainData.heightmapResolution = TerrainSize;
+            terrain.terrainData.size = new Vector3(TerrainSize, TerrainSize / 10, TerrainSize);
             terrain.terrainData.SetHeights(0, 0, heightMap);
         }
 
@@ -171,7 +178,7 @@ namespace TerrainGeneration
             // Update all terrain layers.
             for (int i = 0; i < textureCount; i++)
             {
-                terrainLayers[i].tileSize = new Vector2(maxSize, maxSize);
+                terrainLayers[i].tileSize = new Vector2(TerrainSize, TerrainSize);
                 terrainLayers[i].diffuseTexture.Apply();
             }
         }
@@ -179,7 +186,7 @@ namespace TerrainGeneration
         /// <summary>Reset terrain and texture data.</summary>
         private void ResetTerrain()
         {
-            terrain.terrainData.heightmapResolution = maxSize;
+            terrain.terrainData.heightmapResolution = TerrainSize;
             AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
         }
     }
