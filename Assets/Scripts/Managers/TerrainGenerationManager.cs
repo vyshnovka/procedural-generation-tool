@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using TerrainGeneration.Algorithms;
@@ -19,7 +19,7 @@ namespace TerrainGeneration
         [SerializeField]
         private Terrain terrain;
         [SerializeField]
-        [Tooltip("Values below 128 are not recommended as it may lead to low texture quality.")]
+        [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
         private Size size = Size._256;
         [SerializeField]
         private GradientType gradientType = GradientType.Grayscale;
