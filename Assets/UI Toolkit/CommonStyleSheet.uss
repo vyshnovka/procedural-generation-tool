@@ -1,0 +1,30 @@
+.smallContainer {
+    width: 80%;
+    height: 20%;
+    margin-left: 10%;
+    margin-right: 10%;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdownBox {
+}
+
+.radioButton {
+    width: 25%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    -unity-text-align: upper-center;
+    height: 70px;
+}
+
+.radioButtonVisual {
+    width: 10%;
+    height: 10%;
+}
+
+.textSmall {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 255);
+}
