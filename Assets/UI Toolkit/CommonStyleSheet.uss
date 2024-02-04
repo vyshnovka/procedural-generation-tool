@@ -1,8 +1,8 @@
 .smallContainer {
-    width: 80%;
+    width: 90%;
     height: 20%;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
     align-items: center;
     justify-content: center;
 }
@@ -26,5 +26,11 @@
 
 .textSmall {
     font-size: 15px;
-    color: rgba(255, 255, 255, 255);
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+}
+
+.smallButton {
+    width: 30%;
+    height: 80%;
 }
