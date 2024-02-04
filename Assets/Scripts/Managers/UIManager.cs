@@ -13,10 +13,16 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TerrainGenerationManager terrainGenerator;
 
-    void Start()
-    {
-        var root = document.rootVisualElement;
+    private VisualElement root;
 
+    void OnEnable()
+    {
+        root = document.rootVisualElement;
         root.Q<Button>("Generate").clicked += () => terrainGenerator.DisplayResult();
+    }
+
+    void OnDisable()
+    {
+        root.Q<Button>("Generate").clicked -= () => terrainGenerator.DisplayResult();
     }
 }
