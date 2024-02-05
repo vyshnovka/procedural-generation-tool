@@ -20,9 +20,9 @@ namespace TerrainGeneration
         private Terrain terrain;
         [SerializeField]
         [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
-        private Size size = Size._256;
+        private Size size;
         [SerializeField]
-        private GradientType gradientType = GradientType.Grayscale;
+        private GradientType gradientType;
         [SerializeField]
         private Texture2D texture;
 
@@ -34,20 +34,27 @@ namespace TerrainGeneration
         [SerializeField]
         private Gradient water;
 
-        private float[,] heightMap;
+        private Algorithm algorithm;
+        private Gradient gradient;
+        private string texturePath;
+
         public int TerrainSize
         {
             get { return (int)size; }
-            set { TerrainSizeChanged?.Invoke((int)size); }
+            set 
+            {
+                size = (Size)value;
+                TerrainSizeChanged?.Invoke((int)size); 
+            }
         }
-        private Algorithm algorithm;
-        private Gradient gradient;
+        public float[,] HeightMap { get; set; }
 
-        private string texturePath;
+        //TODO VERY temporary solution!!! Need to find a way to check if the heightmap was loaded from a file or generated.
+        public bool isLoaded = false;
 
         void Start()
         {
-            TerrainSize = (int)size;
+            TerrainSize = (int)size; //? I don't like it.
             texturePath = AssetDatabase.GetAssetPath(texture);
 
             ResetTerrain();
@@ -58,27 +65,31 @@ namespace TerrainGeneration
         {
             TerrainSize = (int)size;
 
-            switch (algorithmType)
+            //? Maybe separate this?..
+            if (!isLoaded)
             {
-                case AlgorithmType.WhiteNoise:
-                    algorithm = new WhiteNoise();
-                    break;
-                case AlgorithmType.PerlinNoise:
-                    algorithm = new PerlinNoise();
-                    break;
-                case AlgorithmType.DiamondSquare:
-                    algorithm = new DiamondSquare();
-                    break;
-                case AlgorithmType.WorleyNoise:
-                    algorithm = new WorleyNoise();
-                    break;
-                default:
-                    ResetTerrain();
-                    return;
-            }
+                switch (algorithmType)
+                {
+                    case AlgorithmType.WhiteNoise:
+                        algorithm = new WhiteNoise();
+                        break;
+                    case AlgorithmType.PerlinNoise:
+                        algorithm = new PerlinNoise();
+                        break;
+                    case AlgorithmType.DiamondSquare:
+                        algorithm = new DiamondSquare();
+                        break;
+                    case AlgorithmType.WorleyNoise:
+                        algorithm = new WorleyNoise();
+                        break;
+                    default:
+                        ResetTerrain();
+                        return;
+                }
 
-            heightMap = algorithm.GenerateHeightMap(TerrainSize);
-            heightMap.NormalizeArray(TerrainSize, TerrainSize);
+                HeightMap = algorithm.GenerateHeightMap(TerrainSize);
+                HeightMap.NormalizeArray(TerrainSize, TerrainSize);
+            }
 
             GenerateTerrain();
             ApplyTexture();
@@ -97,7 +108,7 @@ namespace TerrainGeneration
             {
                 for (int y = 0; y < TerrainSize; y++)
                 {
-                    float n = heightMap[x, y];
+                    float n = HeightMap[x, y];
                     texture.SetPixel(x, y, new Color(n, n, n, 1));
                 }
             }
@@ -110,7 +121,7 @@ namespace TerrainGeneration
         {
             terrain.terrainData.heightmapResolution = TerrainSize;
             terrain.terrainData.size = new Vector3(TerrainSize, TerrainSize / 10, TerrainSize);
-            terrain.terrainData.SetHeights(0, 0, heightMap);
+            terrain.terrainData.SetHeights(0, 0, HeightMap);
         }
 
         /// <summary>Paint terrain pixel by pixel depending on its height.</summary>

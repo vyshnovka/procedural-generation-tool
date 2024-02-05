@@ -330,8 +330,54 @@ Transform:
   - {fileID: 1074327519}
   - {fileID: 1703777239}
   - {fileID: 829112315}
+  - {fileID: 724454389}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &724454388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 724454389}
+  - component: {fileID: 724454390}
+  m_Layer: 0
+  m_Name: Save Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &724454389
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724454388}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 357660023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &724454390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724454388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b25cb57f10e1714392a5694b4d2762d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainManager: {fileID: 1703777238}
 --- !u!1 &829112314
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,6 +425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   document: {fileID: 829112317}
   terrainGenerator: {fileID: 1703777238}
+  saveManager: {fileID: 724454390}
 --- !u!114 &829112317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,9 +515,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67a82e143bb92d4c98467f2a3b849ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithmType: 0
+  algorithmType: 1
   terrain: {fileID: 305544099}
-  size: 256
+  size: 64
   gradientType: 2
   texture: {fileID: 2800000, guid: e6ff0d19c97771446a91455cd7547bea, type: 3}
   grayscale:
