@@ -2,17 +2,20 @@ using TerrainGeneration;
 using UnityEngine;
 using Utils;
 
-public class CameraManager : MonoBehaviour
+namespace Managers
 {
-    void OnEnable()
+    public class CameraManager : MonoBehaviour
     {
-        TerrainGenerationManager.TerrainSizeChanged += UpdateCameraPositionForTerrainSize;
-    }
+        void OnEnable()
+        {
+            TerrainGenerationManager.TerrainSizeChanged += UpdateCameraPositionForTerrainSize;
+        }
 
-    void OnDisable()
-    {
-        TerrainGenerationManager.TerrainSizeChanged -= UpdateCameraPositionForTerrainSize;
-    }
+        void OnDisable()
+        {
+            TerrainGenerationManager.TerrainSizeChanged -= UpdateCameraPositionForTerrainSize;
+        }
 
-    private void UpdateCameraPositionForTerrainSize(int position) => Camera.main.transform.SetPosition(position / 2, position / 2, -(position / 4));
+        private void UpdateCameraPositionForTerrainSize(int position) => Camera.main.transform.SetPosition(position / 2, position / 2, -(position / 4));
+    }
 }
