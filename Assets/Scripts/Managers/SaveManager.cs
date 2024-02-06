@@ -15,6 +15,7 @@ namespace Managers
 
         public void SaveFloatArray()
         {
+            //? Also need to save the terrain image.
             var arrayToSave = terrainManager.HeightMap;
             string filePath = EditorUtility.SaveFilePanel("Save Height Map as...", "", fileName, "dat");
 
@@ -37,9 +38,9 @@ namespace Managers
                 BinaryFormatter formatter = new();
                 using (FileStream stream = new(filePath, FileMode.Open))
                 {
-                    //TODO Also need to set the size of the map accordingly. Now it can cause errors if loaded map is smaller/bigger than the size that is set.
-                    terrainManager.isLoaded = true;
+                    terrainManager.NeedToGenerate = false;
                     terrainManager.HeightMap = (float[,])formatter.Deserialize(stream);
+                    terrainManager.TerrainSize = terrainManager.HeightMap.GetLength(0); //TODO The camera is moving not when generated, but when loaded, not good.
                 }
             }
         }

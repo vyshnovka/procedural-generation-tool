@@ -34,10 +34,6 @@ namespace TerrainGeneration
         [SerializeField]
         private Gradient water;
 
-        private Algorithm algorithm;
-        private Gradient gradient;
-        private string texturePath;
-
         public int TerrainSize
         {
             get { return (int)size; }
@@ -48,9 +44,11 @@ namespace TerrainGeneration
             }
         }
         public float[,] HeightMap { get; set; }
+        public bool NeedToGenerate { get; set; } = true;
 
-        //TODO VERY temporary solution!!! Need to find a way to check if the heightmap was loaded from a file or generated.
-        public bool isLoaded = false;
+        private Algorithm algorithm;
+        private Gradient gradient;
+        private string texturePath;
 
         void Start()
         {
@@ -63,10 +61,10 @@ namespace TerrainGeneration
         /// <summary>Generate terrain using corresponding algorithm and apply texture to it.</summary>
         public void DisplayResult()
         {
-            TerrainSize = (int)size;
+            TerrainSize = (int)size; //? Same, looks bad and makes no sense.
 
             //? Maybe separate this?..
-            if (!isLoaded)
+            if (NeedToGenerate)
             {
                 switch (algorithmType)
                 {
@@ -94,6 +92,7 @@ namespace TerrainGeneration
             GenerateTerrain();
             ApplyTexture();
             PaintTerrain();
+            NeedToGenerate = true;
         }
 
         /// <summary>Apply generated texture pixel by pixel.</summary>
