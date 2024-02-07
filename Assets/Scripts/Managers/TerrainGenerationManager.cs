@@ -37,11 +37,7 @@ namespace TerrainGeneration
         public int TerrainSize
         {
             get { return (int)size; }
-            set 
-            {
-                size = (Size)value;
-                TerrainSizeChanged?.Invoke((int)size); 
-            }
+            set { size = (Size)value; }
         }
         public float[,] HeightMap { get; set; }
         public bool NeedToGenerate { get; set; } = true;
@@ -52,6 +48,7 @@ namespace TerrainGeneration
 
         void Start()
         {
+            //TODO The camera is not moving now here.
             TerrainSize = (int)size; //? I don't like it.
             texturePath = AssetDatabase.GetAssetPath(texture);
 
@@ -62,6 +59,7 @@ namespace TerrainGeneration
         public void DisplayResult()
         {
             TerrainSize = (int)size; //? Same, looks bad and makes no sense.
+            TerrainSizeChanged?.Invoke(TerrainSize);
 
             //? Maybe separate this?..
             if (NeedToGenerate)

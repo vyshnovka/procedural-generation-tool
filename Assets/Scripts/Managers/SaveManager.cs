@@ -40,7 +40,7 @@ namespace Managers
                 {
                     terrainManager.NeedToGenerate = false;
                     terrainManager.HeightMap = (float[,])formatter.Deserialize(stream);
-                    terrainManager.TerrainSize = terrainManager.HeightMap.GetLength(0); //TODO The camera is moving not when generated, but when loaded, not good.
+                    terrainManager.TerrainSize = terrainManager.HeightMap.GetLength(0);
                 }
             }
         }
