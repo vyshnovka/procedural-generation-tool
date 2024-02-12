@@ -3,7 +3,7 @@
     <ui:VisualElement name="Container" style="width: 100%; height: 100%; flex-direction: row; justify-content: space-between; align-items: flex-start;">
         <ui:VisualElement name="Settings" style="width: 25%; height: 35%; background-color: rgba(255, 255, 255, 0.04); justify-content: space-around; align-items: center; color: rgba(123, 123, 123, 0.54); background-image: url(&apos;project://database/Assets/Images/White.png?fileID=21300000&amp;guid=9bce4995469076848b32d0fdf6220e69&amp;type=3#White&apos;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.04);">
             <ui:EnumField label="Algorithm Type" type="SharedDefs.AlgorithmType, Assembly-CSharp" name="AlgorithmEnum" class="smallContainer dropdownBox textSmall" />
-            <ui:EnumField label="Terrain Size" type="SharedDefs.Size, Assembly-CSharp" name="SizeEnum" value="_256" class="smallContainer dropdownBox textSmall" />
+            <ui:EnumField label="Terrain Size" type="SharedDefs.Size, Assembly-CSharp" name="SizeEnum" class="smallContainer dropdownBox textSmall" />
             <ui:GroupBox name="GradientGroupBox" class="smallContainer textSmall" style="flex-direction: row; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-top: 0; padding-bottom: 0;">
                 <ui:RadioButton label="Grayscale" name="GrayscaleRadio" value="true" class="radioButton textSmall" />
                 <ui:RadioButton label="Mountains" name="MountainsRadio" value="false" class="radioButton textSmall" />

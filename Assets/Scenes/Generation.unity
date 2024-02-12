@@ -497,7 +497,7 @@ GameObject:
   - component: {fileID: 1703777239}
   - component: {fileID: 1703777238}
   m_Layer: 0
-  m_Name: Terrain Generator
+  m_Name: Terrain Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -515,9 +515,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67a82e143bb92d4c98467f2a3b849ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithmType: 1
+  selectedAlgorithmType: 0
   terrain: {fileID: 305544099}
-  size: 64
+  size: 512
   gradientType: 2
   texture: {fileID: 2800000, guid: e6ff0d19c97771446a91455cd7547bea, type: 3}
   grayscale:
