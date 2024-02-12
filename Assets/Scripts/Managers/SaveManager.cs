@@ -40,7 +40,7 @@ namespace Managers
                 {
                     terrainManager.NeedToGenerate = false;
                     terrainManager.HeightMap = (float[,])formatter.Deserialize(stream);
-                    terrainManager.TerrainSize = terrainManager.HeightMap.GetLength(0);
+                    terrainManager.SelectedSize = terrainManager.HeightMap.GetLength(0);
                 }
             }
         }
