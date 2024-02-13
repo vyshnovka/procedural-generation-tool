@@ -15,7 +15,7 @@ namespace SharedDefs
     {
         Grayscale = 0,
         Mountains = 1,
-        Water = 2,
+        WaterSurface = 2,
     }
 
     /// <summary>Size of resulting terrain and texture.</summary>
