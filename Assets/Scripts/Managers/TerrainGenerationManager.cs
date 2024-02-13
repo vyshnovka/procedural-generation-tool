@@ -18,14 +18,6 @@ namespace TerrainGeneration
         [SerializeField]
         private Texture2D texture;
         
-        [SerializeField]
-        private AlgorithmType selectedAlgorithmType = AlgorithmType.None;
-        [SerializeField]
-        [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
-        private Size selectedSize = Size._256;
-        [SerializeField]
-        private GradientType selectedGradientType = GradientType.Grayscale;
-
         [Header("Gradients")]
         [SerializeField]
         private Gradient grayscale;
@@ -33,6 +25,12 @@ namespace TerrainGeneration
         private Gradient mountains;
         [SerializeField]
         private Gradient water;
+
+        private AlgorithmType selectedAlgorithmType = AlgorithmType.None;
+        [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
+        private Size selectedSize = Size._256;
+        [SerializeField]
+        private GradientType selectedGradientType = GradientType.Grayscale;
 
         public string SelectedAlgorithmTypeAsName 
         { 
@@ -47,13 +45,32 @@ namespace TerrainGeneration
         }
         public int SelectedSizeAsNumber
         {
-            get { return (int)selectedSize; }
-            set { selectedSize = (Size)value; }
+            get => (int)selectedSize;
+            set => selectedSize = (Size)value;
+        }
+        //? How to set both labels for UI AND values for radio buttons? Maybe use string here?
+        public GradientType SelectedGradientType 
+        { 
+            get => selectedGradientType; 
+            set => selectedGradientType = value; 
+        }
+        //? Use a dictionary instead.
+        public Gradient SelectedGradientTypeAsGradient
+        {
+            get
+            {
+                return selectedGradientType switch
+                {
+                    GradientType.Grayscale => grayscale,
+                    GradientType.Mountains => mountains,
+                    GradientType.WaterSurface => water,
+                    _ => grayscale,
+                };
+            }
         }
         public float[,] HeightMap { get; set; }
         public bool NeedToGenerate { get; set; } = true;
 
-        private Gradient gradient;
         private string texturePath;
 
         void Start()
@@ -125,29 +142,14 @@ namespace TerrainGeneration
             int textureResolution = terrain.terrainData.alphamapResolution;
             int textureCount = terrainLayers.Length;
 
-            //TODO Update to work the same way as algorithm type does.
-            switch (selectedGradientType)
-            {
-                case GradientType.Grayscale:
-                    gradient = grayscale;
-                    break;
-                case GradientType.Mountains:
-                    gradient = mountains;
-                    break;
-                case GradientType.Water:
-                    gradient = water;
-                    break;
-                default:
-                    break;
-            }
-
-            // Loop through each point on terrain and set color depending on height.
+            // Loop through each point on terrain and set color depending on height and selected gradient.
+            var selectedGradient = SelectedGradientTypeAsGradient;
             for (int x = 0; x < terrain.terrainData.heightmapResolution; x++)
             {
                 for (int y = 0; y < terrain.terrainData.heightmapResolution; y++)
                 {
                     float height = heights[x, y];
-                    Color color = gradient.Evaluate(height);
+                    Color color = selectedGradient.Evaluate(height);
 
                     float[] textureValues = new float[textureCount];
                     for (int i = 0; i < textureCount; i++)

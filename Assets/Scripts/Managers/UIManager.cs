@@ -30,6 +30,8 @@ namespace Managers
             var sizeDropdown = root.Q<EnumField>("SizeEnum");
             sizeDropdown.RegisterValueChangedCallback(evt => terrainGenerator.SelectedSizeAsNumber = Convert.ToInt32(evt.newValue));
             sizeDropdown.value = (Enum)Enum.ToObject(sizeDropdown.value.GetType(), terrainGenerator.SelectedSizeAsNumber);
+
+            //TODO Logic for gradient radio buttons.
         }
 
         void OnDisable()
