@@ -1,4 +1,3 @@
-using SharedDefs;
 using System;
 using TerrainGeneration;
 using UnityEngine;
@@ -25,12 +24,12 @@ namespace Managers
             root.Q<Button>("Load").clicked += () => saveManager.LoadFloatArray();
 
             var algorithmDropdown = root.Q<EnumField>("AlgorithmEnum");
-            algorithmDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedAlgorithmType = _.newValue.ToString());
-            algorithmDropdown.value = (AlgorithmType)Enum.Parse(typeof(AlgorithmType), terrainGenerator.SelectedAlgorithmType); //? Looks too complex. Is there a way to change it?
+            algorithmDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedAlgorithmTypeAsName = _.newValue.ToString());
+            algorithmDropdown.value = (Enum)Enum.Parse(algorithmDropdown.value.GetType(), terrainGenerator.SelectedAlgorithmTypeAsName);
 
             var sizeDropdown = root.Q<EnumField>("SizeEnum");
-            sizeDropdown.RegisterValueChangedCallback(evt => terrainGenerator.SelectedSize = (int)(Size)evt.newValue);
-            sizeDropdown.value = (Size)terrainGenerator.SelectedSize; //? using SharedDefs; is bad. Needs to be more generic and robust.
+            sizeDropdown.RegisterValueChangedCallback(evt => terrainGenerator.SelectedSizeAsNumber = Convert.ToInt32(evt.newValue));
+            sizeDropdown.value = (Enum)Enum.ToObject(sizeDropdown.value.GetType(), terrainGenerator.SelectedSizeAsNumber);
         }
 
         void OnDisable()

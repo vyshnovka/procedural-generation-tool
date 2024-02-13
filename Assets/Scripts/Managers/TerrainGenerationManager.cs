@@ -12,19 +12,19 @@ namespace TerrainGeneration
     {
         public static event Action<int> TerrainSizeChanged;
 
-        [SerializeField]
-        private AlgorithmType selectedAlgorithmType;
-
         [Header("Terrain Data")]
         [SerializeField]
         private Terrain terrain;
         [SerializeField]
-        [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
-        private Size size;
-        [SerializeField]
-        private GradientType gradientType;
-        [SerializeField]
         private Texture2D texture;
+        
+        [SerializeField]
+        private AlgorithmType selectedAlgorithmType = AlgorithmType.None;
+        [SerializeField]
+        [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
+        private Size selectedSize = Size._256;
+        [SerializeField]
+        private GradientType selectedGradientType = GradientType.Grayscale;
 
         [Header("Gradients")]
         [SerializeField]
@@ -34,8 +34,7 @@ namespace TerrainGeneration
         [SerializeField]
         private Gradient water;
 
-        //? Maybe avoid using the string?
-        public string SelectedAlgorithmType 
+        public string SelectedAlgorithmTypeAsName 
         { 
             get => selectedAlgorithmType.ToString(); 
             set
@@ -46,11 +45,10 @@ namespace TerrainGeneration
                 }
             }
         }
-        //? Same, maybe not int?..
-        public int SelectedSize
+        public int SelectedSizeAsNumber
         {
-            get { return (int)size; }
-            set { size = (Size)value; }
+            get { return (int)selectedSize; }
+            set { selectedSize = (Size)value; }
         }
         public float[,] HeightMap { get; set; }
         public bool NeedToGenerate { get; set; } = true;
@@ -70,11 +68,11 @@ namespace TerrainGeneration
         {
             if (NeedToGenerate)
             {
-                if (Type.GetType(typeof(Algorithm).Namespace + "." + SelectedAlgorithmType) is Type algorithmType)
+                if (Type.GetType(typeof(Algorithm).Namespace + "." + SelectedAlgorithmTypeAsName) is Type algorithmType)
                 {
                     var algorithm = (Algorithm)Activator.CreateInstance(algorithmType);
-                    HeightMap = algorithm.GenerateHeightMap(SelectedSize);
-                    HeightMap.NormalizeArray(SelectedSize, SelectedSize);
+                    HeightMap = algorithm.GenerateHeightMap(SelectedSizeAsNumber);
+                    HeightMap.NormalizeArray(SelectedSizeAsNumber, SelectedSizeAsNumber);
                 }
                 else
                 {
@@ -83,7 +81,7 @@ namespace TerrainGeneration
                 }
             }
 
-            TerrainSizeChanged?.Invoke(SelectedSize);
+            TerrainSizeChanged?.Invoke(SelectedSizeAsNumber);
             GenerateTerrain();
             ApplyTexture();
             PaintTerrain();
@@ -95,12 +93,12 @@ namespace TerrainGeneration
         {
             // Reimport texture with corresponding max size.
             TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
-            importer.maxTextureSize = SelectedSize;
+            importer.maxTextureSize = SelectedSizeAsNumber;
             AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
 
-            for (int x = 0; x < SelectedSize; x++)
+            for (int x = 0; x < SelectedSizeAsNumber; x++)
             {
-                for (int y = 0; y < SelectedSize; y++)
+                for (int y = 0; y < SelectedSizeAsNumber; y++)
                 {
                     float n = HeightMap[x, y];
                     texture.SetPixel(x, y, new Color(n, n, n, 1));
@@ -113,8 +111,8 @@ namespace TerrainGeneration
         /// <summary>Set terrain heights.</summary>
         private void GenerateTerrain()
         {
-            terrain.terrainData.heightmapResolution = SelectedSize;
-            terrain.terrainData.size = new Vector3(SelectedSize, SelectedSize / 10, SelectedSize);
+            terrain.terrainData.heightmapResolution = SelectedSizeAsNumber;
+            terrain.terrainData.size = new Vector3(SelectedSizeAsNumber, SelectedSizeAsNumber / 10, SelectedSizeAsNumber);
             terrain.terrainData.SetHeights(0, 0, HeightMap);
         }
 
@@ -128,7 +126,7 @@ namespace TerrainGeneration
             int textureCount = terrainLayers.Length;
 
             //TODO Update to work the same way as algorithm type does.
-            switch (gradientType)
+            switch (selectedGradientType)
             {
                 case GradientType.Grayscale:
                     gradient = grayscale;
@@ -184,7 +182,7 @@ namespace TerrainGeneration
             // Update all terrain layers.
             for (int i = 0; i < textureCount; i++)
             {
-                terrainLayers[i].tileSize = new Vector2(SelectedSize, SelectedSize);
+                terrainLayers[i].tileSize = new Vector2(SelectedSizeAsNumber, SelectedSizeAsNumber);
                 terrainLayers[i].diffuseTexture.Apply();
             }
         }
@@ -192,9 +190,9 @@ namespace TerrainGeneration
         /// <summary>Reset terrain and texture data.</summary>
         private void ResetTerrain()
         {
-            terrain.terrainData.heightmapResolution = SelectedSize;
+            terrain.terrainData.heightmapResolution = SelectedSizeAsNumber;
             AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
-            TerrainSizeChanged?.Invoke(SelectedSize);
+            TerrainSizeChanged?.Invoke(SelectedSizeAsNumber);
         }
     }
 }
