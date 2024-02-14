@@ -5,6 +5,7 @@ using TerrainGeneration.Algorithms;
 using Utils;
 using SharedDefs;
 using System;
+using System.Collections.Generic;
 
 namespace TerrainGeneration
 {
@@ -20,16 +21,11 @@ namespace TerrainGeneration
         
         [Header("Gradients")]
         [SerializeField]
-        private Gradient grayscale;
-        [SerializeField]
-        private Gradient mountains;
-        [SerializeField]
-        private Gradient water;
+        private List<Gradient> gradients;
 
         private AlgorithmType selectedAlgorithmType = AlgorithmType.None;
         [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
         private Size selectedSize = Size._256;
-        [SerializeField]
         private GradientType selectedGradientType = GradientType.Grayscale;
 
         public string SelectedAlgorithmTypeAsName 
@@ -48,25 +44,10 @@ namespace TerrainGeneration
             get => (int)selectedSize;
             set => selectedSize = (Size)value;
         }
-        //? How to set both labels for UI AND values for radio buttons? Maybe use string here?
-        public GradientType SelectedGradientType 
-        { 
-            get => selectedGradientType; 
-            set => selectedGradientType = value; 
-        }
-        //? Use a dictionary instead.
-        public Gradient SelectedGradientTypeAsGradient
+        public int SelectedGradientTypeAsNumber
         {
-            get
-            {
-                return selectedGradientType switch
-                {
-                    GradientType.Grayscale => grayscale,
-                    GradientType.Mountains => mountains,
-                    GradientType.WaterSurface => water,
-                    _ => grayscale,
-                };
-            }
+            get => (int)selectedGradientType;
+            set => selectedGradientType = (GradientType)value;
         }
         public float[,] HeightMap { get; set; }
         public bool NeedToGenerate { get; set; } = true;
@@ -143,7 +124,7 @@ namespace TerrainGeneration
             int textureCount = terrainLayers.Length;
 
             // Loop through each point on terrain and set color depending on height and selected gradient.
-            var selectedGradient = SelectedGradientTypeAsGradient;
+            var selectedGradient = gradients[SelectedGradientTypeAsNumber];
             for (int x = 0; x < terrain.terrainData.heightmapResolution; x++)
             {
                 for (int y = 0; y < terrain.terrainData.heightmapResolution; y++)
