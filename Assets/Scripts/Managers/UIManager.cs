@@ -37,10 +37,12 @@ namespace Managers
             algorithmDropdown.value = (Enum)Enum.Parse(algorithmDropdown.value.GetType(), terrainGenerator.SelectedAlgorithmTypeAsName);
 
             var sizeDropdown = root.Q<EnumField>("SizeEnum");
-            sizeDropdown.RegisterValueChangedCallback(evt => terrainGenerator.SelectedSizeAsNumber = Convert.ToInt32(evt.newValue));
+            sizeDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedSizeAsNumber = Convert.ToInt32(_.newValue));
             sizeDropdown.value = (Enum)Enum.ToObject(sizeDropdown.value.GetType(), terrainGenerator.SelectedSizeAsNumber);
 
-            //TODO Logic for gradient radio buttons.
+            var gradientDropdown = root.Q<EnumField>("GradientEnum");
+            gradientDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedGradientTypeAsNumber = Convert.ToInt32(_.newValue));
+            gradientDropdown.value = (Enum)Enum.ToObject(gradientDropdown.value.GetType(), terrainGenerator.SelectedGradientTypeAsNumber);
         }
 
         void OnDisable()

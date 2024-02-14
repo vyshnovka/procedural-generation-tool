@@ -34,3 +34,8 @@
     width: 30%;
     height: 80%;
 }
+
+#unity-radio-button-group__container {
+    flex-direction: row;
+    justify-content: space-around;
+}
