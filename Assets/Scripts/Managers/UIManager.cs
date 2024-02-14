@@ -47,7 +47,7 @@ namespace Managers
 
         void OnDisable()
         {
-            //? This is not working.
+            //? This is not working. Need to unsubscribe.
             //root.Q<Button>("Generate").clicked -= () => terrainGenerator.DisplayResult();
             //root.Q<Button>("Success").clicked -= () => terrainGenerator.DisplayResult();
             //root.Q<Button>("Save").clicked -= () => saveManager.SaveFloatArray();

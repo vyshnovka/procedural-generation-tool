@@ -24,6 +24,7 @@ namespace TerrainGeneration
         private List<Gradient> gradients;
 
         private AlgorithmType selectedAlgorithmType = AlgorithmType.None;
+        //TODO Add this tooltip as a warning to UI.
         [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
         private Size selectedSize = Size._256;
         private GradientType selectedGradientType = GradientType.Grayscale;
