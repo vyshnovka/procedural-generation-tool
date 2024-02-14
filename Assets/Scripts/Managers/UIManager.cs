@@ -20,8 +20,17 @@ namespace Managers
         {
             root = document.rootVisualElement;
             root.Q<Button>("Generate").clicked += () => terrainGenerator.DisplayResult();
+            root.Q<Button>("Success").clicked += () =>
+            {
+                terrainGenerator.DisplayResult();
+                root.Q<VisualElement>("Popup").style.opacity = 0;
+            };
             root.Q<Button>("Save").clicked += () => saveManager.SaveFloatArray();
-            root.Q<Button>("Load").clicked += () => saveManager.LoadFloatArray();
+            root.Q<Button>("Load").clicked += () => 
+            { 
+                if (saveManager.LoadFloatArray())
+                    root.Q<VisualElement>("Popup").style.opacity = 100;
+            };
 
             var algorithmDropdown = root.Q<EnumField>("AlgorithmEnum");
             algorithmDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedAlgorithmTypeAsName = _.newValue.ToString());
@@ -36,9 +45,11 @@ namespace Managers
 
         void OnDisable()
         {
-            root.Q<Button>("Generate").clicked -= () => terrainGenerator.DisplayResult();
-            root.Q<Button>("Save").clicked -= () => saveManager.SaveFloatArray();
-            root.Q<Button>("Load").clicked -= () => saveManager.LoadFloatArray();
+            //? This is not working.
+            //root.Q<Button>("Generate").clicked -= () => terrainGenerator.DisplayResult();
+            //root.Q<Button>("Success").clicked -= () => terrainGenerator.DisplayResult();
+            //root.Q<Button>("Save").clicked -= () => saveManager.SaveFloatArray();
+            //root.Q<Button>("Load").clicked -= () => saveManager.LoadFloatArray();
         }
     }
 }

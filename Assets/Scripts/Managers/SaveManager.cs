@@ -29,19 +29,20 @@ namespace Managers
             }
         }
 
-        public void LoadFloatArray()
+        public bool LoadFloatArray()
         {
             string filePath = EditorUtility.OpenFilePanel("Load Height Map from...", "", "dat");
 
-            if (!string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath))
+                return false;
+
+            BinaryFormatter formatter = new();
+            using (FileStream stream = new(filePath, FileMode.Open))
             {
-                BinaryFormatter formatter = new();
-                using (FileStream stream = new(filePath, FileMode.Open))
-                {
-                    terrainManager.NeedToGenerate = false;
-                    terrainManager.HeightMap = (float[,])formatter.Deserialize(stream);
-                    terrainManager.SelectedSizeAsNumber = terrainManager.HeightMap.GetLength(0);
-                }
+                terrainManager.NeedToGenerate = false;
+                terrainManager.HeightMap = (float[,])formatter.Deserialize(stream);
+                terrainManager.SelectedSizeAsNumber = terrainManager.HeightMap.GetLength(0);
+                return true;
             }
         }
     }
