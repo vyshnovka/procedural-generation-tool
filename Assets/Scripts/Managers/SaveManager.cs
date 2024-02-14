@@ -13,6 +13,7 @@ namespace Managers
         [SerializeField]
         private TerrainGenerationManager terrainManager;
 
+        /// <summary>Save float array (height map) to a .dat file.</summary>
         public void SaveFloatArray()
         {
             //? Also need to save the terrain image.
@@ -29,6 +30,7 @@ namespace Managers
             }
         }
 
+        /// <summary>Load height map from a .dat file that contains a float array.</summary>
         public bool LoadFloatArray()
         {
             string filePath = EditorUtility.OpenFilePanel("Load Height Map from...", "", "dat");
