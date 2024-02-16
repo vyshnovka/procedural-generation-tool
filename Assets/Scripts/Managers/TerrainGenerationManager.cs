@@ -126,9 +126,9 @@ namespace TerrainGeneration
 
             // Loop through each point on terrain and set color depending on height and selected gradient.
             var selectedGradient = gradients[SelectedGradientTypeAsNumber];
-            for (int x = 0; x < terrain.terrainData.heightmapResolution; x++)
+            for (int x = 0; x < terrain.terrainData.heightmapResolution - 1; x++)
             {
-                for (int y = 0; y < terrain.terrainData.heightmapResolution; y++)
+                for (int y = 0; y < terrain.terrainData.heightmapResolution - 1; y++)
                 {
                     float height = heights[x, y];
                     Color color = selectedGradient.Evaluate(height);
