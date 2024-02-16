@@ -9,9 +9,9 @@ namespace TerrainGeneration.Algorithms
         {
             float[,] noise = new float[size, size];
 
-            System.Random random = new();
+            Random random = new();
 
-            int numCells = random.Next(size / 4);
+            int numCells = random.Next(1, size / 4);
             float hardness = 1f;
 
             Vector2[] points = new Vector2[numCells];
