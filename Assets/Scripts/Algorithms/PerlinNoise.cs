@@ -32,10 +32,10 @@ namespace TerrainGeneration.Algorithms
                         float tx = sampleX - xi0;
                         float ty = sampleY - yi0;
 
-                        int aa = permutationTable[permutationTable[xi0] + yi0];
-                        int ab = permutationTable[permutationTable[xi0] + yi1];
-                        int ba = permutationTable[permutationTable[xi1] + yi0];
-                        int bb = permutationTable[permutationTable[xi1] + yi1];
+                        int aa = permutationTable[(permutationTable[xi0 % size] + yi0) % size];
+                        int ab = permutationTable[(permutationTable[xi0 % size] + yi1) % size];
+                        int ba = permutationTable[(permutationTable[xi1 % size] + yi0) % size];
+                        int bb = permutationTable[(permutationTable[xi1 % size] + yi1) % size];
 
                         float gradientX1 = Grad(aa, tx, ty);
                         float gradientX2 = Grad(ba, tx - 1f, ty);
