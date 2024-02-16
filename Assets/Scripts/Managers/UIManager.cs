@@ -41,17 +41,8 @@ namespace Managers
             sizeDropdown.value = (Enum)Enum.ToObject(sizeDropdown.value.GetType(), terrainGenerator.SelectedSizeAsNumber);
 
             var gradientDropdown = root.Q<EnumField>("GradientEnum");
-            gradientDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedGradientTypeAsNumber = Convert.ToInt32(_.newValue));
-            gradientDropdown.value = (Enum)Enum.ToObject(gradientDropdown.value.GetType(), terrainGenerator.SelectedGradientTypeAsNumber);
-        }
-
-        void OnDisable()
-        {
-            //? This is not working. Need to unsubscribe.
-            //root.Q<Button>("Generate").clicked -= () => terrainGenerator.DisplayResult();
-            //root.Q<Button>("Success").clicked -= () => terrainGenerator.DisplayResult();
-            //root.Q<Button>("Save").clicked -= () => saveManager.SaveFloatArray();
-            //root.Q<Button>("Load").clicked -= () => saveManager.LoadFloatArray();
+            gradientDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedColorSchemeAsNumber = Convert.ToInt32(_.newValue));
+            gradientDropdown.value = (Enum)Enum.ToObject(gradientDropdown.value.GetType(), terrainGenerator.SelectedColorSchemeAsNumber);
         }
     }
 }

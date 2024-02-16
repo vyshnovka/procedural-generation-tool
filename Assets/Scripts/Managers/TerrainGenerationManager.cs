@@ -24,10 +24,10 @@ namespace TerrainGeneration
         private List<Gradient> gradients;
 
         private AlgorithmType selectedAlgorithmType = AlgorithmType.None;
-        //TODO Add this tooltip as a warning to UI.
+        //TODO Add this tooltip as a warning.
         [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
         private Size selectedSize = Size._256;
-        private GradientType selectedGradientType = GradientType.Grayscale;
+        private ColorScheme selectedColorScheme = ColorScheme.Grayscale;
 
         public string SelectedAlgorithmTypeAsName 
         { 
@@ -45,10 +45,10 @@ namespace TerrainGeneration
             get => (int)selectedSize;
             set => selectedSize = (Size)value;
         }
-        public int SelectedGradientTypeAsNumber
+        public int SelectedColorSchemeAsNumber
         {
-            get => (int)selectedGradientType;
-            set => selectedGradientType = (GradientType)value;
+            get => (int)selectedColorScheme;
+            set => selectedColorScheme = (ColorScheme)value;
         }
         public float[,] HeightMap { get; set; }
         public bool NeedToGenerate { get; set; } = true;
@@ -125,7 +125,7 @@ namespace TerrainGeneration
             int textureCount = terrainLayers.Length;
 
             // Loop through each point on terrain and set color depending on height and selected gradient.
-            var selectedGradient = gradients[SelectedGradientTypeAsNumber];
+            var selectedGradient = gradients[SelectedColorSchemeAsNumber];
             for (int x = 0; x < terrain.terrainData.heightmapResolution - 1; x++)
             {
                 for (int y = 0; y < terrain.terrainData.heightmapResolution - 1; y++)

@@ -11,10 +11,10 @@ namespace SharedDefs
     }
 
     /// <summary>Colors to apply to terrain depending on height.</summary>
-    public enum GradientType
+    public enum ColorScheme
     {
         Grayscale = 0,
-        Mountains = 1,
+        ElevationMap = 1,
         WaterSurface = 2,
     }
 
