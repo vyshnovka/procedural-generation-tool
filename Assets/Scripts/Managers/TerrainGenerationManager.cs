@@ -18,16 +18,16 @@ namespace TerrainGeneration
         private Terrain terrain;
         [SerializeField]
         private Texture2D texture;
-        
+
         [Header("Gradients")]
         [SerializeField]
         private List<Gradient> gradients;
 
         private AlgorithmType selectedAlgorithmType = AlgorithmType.None;
-        //TODO Add this tooltip as a warning.
-        [Tooltip("Values ​​below 128 are not recommended as this will result in low quality textures. \nValues ​​above 2048 may lead to poor performance on some devices.")]
         private Size selectedSize = Size._256;
         private ColorScheme selectedColorScheme = ColorScheme.Grayscale;
+
+        private string texturePath;
 
         public string SelectedAlgorithmTypeAsName 
         { 
@@ -52,8 +52,6 @@ namespace TerrainGeneration
         }
         public float[,] HeightMap { get; set; }
         public bool NeedToGenerate { get; set; } = true;
-
-        private string texturePath;
 
         void Start()
         {

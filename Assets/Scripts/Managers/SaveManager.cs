@@ -16,7 +16,6 @@ namespace Managers
         /// <summary>Save float array (height map) to a .dat file.</summary>
         public void SaveFloatArray()
         {
-            //TODO Save the terrain image as well.
             var arrayToSave = terrainManager.HeightMap;
             string filePath = EditorUtility.SaveFilePanel("Save Height Map as...", "", fileName, "dat");
 
