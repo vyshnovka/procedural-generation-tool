@@ -28,8 +28,10 @@ namespace Managers
             root.Q<Button>("Save").clicked += () => saveManager.SaveFloatArray();
             root.Q<Button>("Load").clicked += () => 
             { 
-                if (saveManager.LoadFloatArray())
-                    root.Q<VisualElement>("Popup").style.opacity = 100;
+                saveManager.LoadFloatArray(success => {
+                    if (success)
+                        root.Q<VisualElement>("Popup").style.opacity = 100;
+                });
             };
 
             var algorithmDropdown = root.Q<EnumField>("AlgorithmEnum");
