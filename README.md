@@ -36,6 +36,6 @@ Worley noise comes close to simulating textures of stone, water, or biological c
 
 ## Setup
 
-1. Install Unity 2021.3.21 from [archive](https://unity3d.com/get-unity/download/archive).    
+1. Install Unity 2022.3.19 from [archive](https://unity3d.com/get-unity/download/archive).    
 2. Clone this repository using `git clone https://github.com/vyshnovka/procedural-generation.git` in Git Bash.    
 3. Open created folder as a project in Unity Hub.
