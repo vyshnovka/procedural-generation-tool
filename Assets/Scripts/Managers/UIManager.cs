@@ -18,6 +18,8 @@ namespace Managers
 
         void OnEnable()
         {
+            TerrainGenerationManager.TerrainSizeChanged += UpdateValueOFSizeDropdown;
+
             root = document.rootVisualElement;
             root.Q<Button>("Generate").clicked += () => terrainManager.DisplayResult();
             root.Q<Button>("Success").clicked += () =>
@@ -45,6 +47,17 @@ namespace Managers
             var gradientDropdown = root.Q<EnumField>("GradientEnum");
             gradientDropdown.RegisterValueChangedCallback(_ => terrainManager.SelectedColorSchemeAsNumber = Convert.ToInt32(_.newValue));
             gradientDropdown.value = (Enum)Enum.ToObject(gradientDropdown.value.GetType(), terrainManager.SelectedColorSchemeAsNumber);
+        }
+
+        void OnDisable()
+        {
+            TerrainGenerationManager.TerrainSizeChanged -= UpdateValueOFSizeDropdown;
+        }
+
+        private void UpdateValueOFSizeDropdown(int value)
+        {
+            var sizeDropdown = root.Q<EnumField>("SizeEnum");
+            sizeDropdown.value = (Enum)Enum.ToObject(sizeDropdown.value.GetType(), value);
         }
     }
 }
