@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using TerrainGeneration.Algorithms;
 using Utils;
@@ -27,8 +26,6 @@ namespace TerrainGeneration
         private Size selectedSize = Size._256;
         private ColorScheme selectedColorScheme = ColorScheme.Grayscale;
 
-        private string texturePath;
-
         public string SelectedAlgorithmTypeAsName 
         { 
             get => selectedAlgorithmType.ToString(); 
@@ -55,8 +52,6 @@ namespace TerrainGeneration
 
         void Start()
         {
-            texturePath = AssetDatabase.GetAssetPath(texture);
-
             ResetTerrain();
         }
 
@@ -98,9 +93,7 @@ namespace TerrainGeneration
         private void ApplyTexture()
         {
             // Reimport texture with corresponding max size.
-            TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
-            importer.maxTextureSize = SelectedSizeAsNumber;
-            AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
+            texture.Reinitialize(SelectedSizeAsNumber, SelectedSizeAsNumber);
 
             for (int x = 0; x < SelectedSizeAsNumber; x++)
             {
@@ -174,7 +167,7 @@ namespace TerrainGeneration
         private void ResetTerrain()
         {
             terrain.terrainData.heightmapResolution = SelectedSizeAsNumber;
-            AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
+            texture.Reinitialize(SelectedSizeAsNumber, SelectedSizeAsNumber);
             TerrainSizeChanged?.Invoke(SelectedSizeAsNumber);
         }
         #endregion
