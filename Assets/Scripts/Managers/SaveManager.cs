@@ -41,9 +41,9 @@ namespace Managers
         private IEnumerator ShowLoadDialogCoroutine(Action<bool> LoadResultCallback)
         {
             yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, fileName, "Load Height Map from...", "Select");
-            bool success = FileBrowser.Success;
 
-            if (success)
+            bool isSuccess = FileBrowser.Success;
+            if (isSuccess)
             {
                 var filePath = FileBrowser.Result[0];
 
@@ -58,7 +58,7 @@ namespace Managers
                 }
             }
 
-            LoadResultCallback?.Invoke(success);
+            LoadResultCallback?.Invoke(isSuccess);
         }
     }
 }

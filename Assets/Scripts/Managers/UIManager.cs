@@ -10,7 +10,7 @@ namespace Managers
         [SerializeField]
         private UIDocument document;
         [SerializeField]
-        private TerrainGenerationManager terrainGenerator;
+        private TerrainGenerationManager terrainManager;
         [SerializeField]
         private SaveManager saveManager;
 
@@ -19,10 +19,10 @@ namespace Managers
         void OnEnable()
         {
             root = document.rootVisualElement;
-            root.Q<Button>("Generate").clicked += () => terrainGenerator.DisplayResult();
+            root.Q<Button>("Generate").clicked += () => terrainManager.DisplayResult();
             root.Q<Button>("Success").clicked += () =>
             {
-                terrainGenerator.DisplayResult();
+                terrainManager.DisplayResult();
                 root.Q<VisualElement>("Popup").style.opacity = 0;
             };
             root.Q<Button>("Save").clicked += () => saveManager.SaveFloatArray();
@@ -35,16 +35,16 @@ namespace Managers
             };
 
             var algorithmDropdown = root.Q<EnumField>("AlgorithmEnum");
-            algorithmDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedAlgorithmTypeAsName = _.newValue.ToString());
-            algorithmDropdown.value = (Enum)Enum.Parse(algorithmDropdown.value.GetType(), terrainGenerator.SelectedAlgorithmTypeAsName);
+            algorithmDropdown.RegisterValueChangedCallback(_ => terrainManager.SelectedAlgorithmTypeAsName = _.newValue.ToString());
+            algorithmDropdown.value = (Enum)Enum.Parse(algorithmDropdown.value.GetType(), terrainManager.SelectedAlgorithmTypeAsName);
 
             var sizeDropdown = root.Q<EnumField>("SizeEnum");
-            sizeDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedSizeAsNumber = Convert.ToInt32(_.newValue));
-            sizeDropdown.value = (Enum)Enum.ToObject(sizeDropdown.value.GetType(), terrainGenerator.SelectedSizeAsNumber);
+            sizeDropdown.RegisterValueChangedCallback(_ => terrainManager.SelectedSizeAsNumber = Convert.ToInt32(_.newValue));
+            sizeDropdown.value = (Enum)Enum.ToObject(sizeDropdown.value.GetType(), terrainManager.SelectedSizeAsNumber);
 
             var gradientDropdown = root.Q<EnumField>("GradientEnum");
-            gradientDropdown.RegisterValueChangedCallback(_ => terrainGenerator.SelectedColorSchemeAsNumber = Convert.ToInt32(_.newValue));
-            gradientDropdown.value = (Enum)Enum.ToObject(gradientDropdown.value.GetType(), terrainGenerator.SelectedColorSchemeAsNumber);
+            gradientDropdown.RegisterValueChangedCallback(_ => terrainManager.SelectedColorSchemeAsNumber = Convert.ToInt32(_.newValue));
+            gradientDropdown.value = (Enum)Enum.ToObject(gradientDropdown.value.GetType(), terrainManager.SelectedColorSchemeAsNumber);
         }
     }
 }

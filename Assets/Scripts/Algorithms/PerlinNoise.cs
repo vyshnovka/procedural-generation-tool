@@ -81,26 +81,19 @@ namespace TerrainGeneration.Algorithms
             return permutationTable;
         }
 
-        private float Grad(int hash, float x, float y)
+        #region Perlin-specific Helper Methods
+        private float Grad(int hash, float x, float y) => (hash & 3) switch
         {
-            return (hash & 3) switch
-            {
-                0 => x + y,
-                1 => -x + y,
-                2 => x - y,
-                3 => -x - y,
-                _ => 0,
-            };
-        }
+            0 => x + y,
+            1 => -x + y,
+            2 => x - y,
+            3 => -x - y,
+            _ => 0,
+        };
 
-        private float Smooth(float t)
-        {
-            return t * t * t * (t * (t * 6f - 15f) + 10f);
-        }
+        private float Smooth(float t) => t * t * t * (t * (t * 6f - 15f) + 10f);
 
-        private float Lerp(float a, float b, float t)
-        {
-            return a + (b - a) * t;
-        }
+        private float Lerp(float a, float b, float t) => a + (b - a) * t;
+        #endregion
     }
 }
