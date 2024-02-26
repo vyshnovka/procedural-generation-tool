@@ -424,7 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   document: {fileID: 829112317}
-  terrainGenerator: {fileID: 1703777238}
+  terrainManager: {fileID: 1703777238}
   saveManager: {fileID: 724454390}
 --- !u!114 &829112317
 MonoBehaviour:

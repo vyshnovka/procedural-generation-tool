@@ -1,8 +1,10 @@
 using UnityEngine;
+using SimpleFileBrowser;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using TerrainGeneration;
-using UnityEditor;
+using System.Collections;
+using System;
 
 namespace Managers
 {
@@ -13,38 +15,50 @@ namespace Managers
         [SerializeField]
         private TerrainGenerationManager terrainManager;
 
-        /// <summary>Save float array (height map) to a .dat file.</summary>
+        /// <summary>Save float array (height map) to a .dat file in binary.</summary>
         public void SaveFloatArray()
         {
             var arrayToSave = terrainManager.HeightMap;
-            string filePath = EditorUtility.SaveFilePanel("Save Height Map as...", "", fileName, "dat");
-
-            if (string.IsNullOrEmpty(filePath))
+            if (arrayToSave == null) 
                 return;
 
-            BinaryFormatter formatter = new();
-            using (FileStream stream = new(filePath, FileMode.Create))
+            FileBrowser.ShowSaveDialog((paths) => 
             {
-                formatter.Serialize(stream, arrayToSave);
-            }
+                var filePath = paths[0];
+
+                BinaryFormatter formatter = new();
+                using (MemoryStream stream = new())
+                {
+                    formatter.Serialize(stream, arrayToSave);
+                    FileBrowserHelpers.WriteBytesToFile(filePath, stream.ToArray());
+                }
+            }, null, FileBrowser.PickMode.Files, false, null, fileName, "Save Height Map as...", "Save");
         }
 
-        /// <summary>Load height map from a .dat file that contains a float array.</summary>
-        public bool LoadFloatArray()
+        /// <summary>Load height map from a .dat file that contains a float array in binary.</summary>
+        public void LoadFloatArray(Action<bool> LoadResultCallback) => StartCoroutine(ShowLoadDialogCoroutine(LoadResultCallback));
+
+        private IEnumerator ShowLoadDialogCoroutine(Action<bool> LoadResultCallback)
         {
-            string filePath = EditorUtility.OpenFilePanel("Load Height Map from...", "", "dat");
+            yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, fileName, "Load Height Map from...", "Select");
 
-            if (string.IsNullOrEmpty(filePath))
-                return false;
-
-            BinaryFormatter formatter = new();
-            using (FileStream stream = new(filePath, FileMode.Open))
+            bool isSuccess = FileBrowser.Success;
+            if (isSuccess)
             {
-                terrainManager.NeedToGenerate = false;
-                terrainManager.HeightMap = (float[,])formatter.Deserialize(stream);
-                terrainManager.SelectedSizeAsNumber = terrainManager.HeightMap.GetLength(0);
-                return true;
+                var filePath = FileBrowser.Result[0];
+
+                var byteArray = FileBrowserHelpers.ReadBytesFromFile(filePath);
+
+                BinaryFormatter formatter = new();
+                using (MemoryStream stream = new(byteArray))
+                {
+                    terrainManager.HeightMap = (float[,])formatter.Deserialize(stream);
+                    terrainManager.SelectedSizeAsNumber = terrainManager.HeightMap.GetLength(0);
+                    terrainManager.NeedToGenerate = false;
+                }
             }
+
+            LoadResultCallback?.Invoke(isSuccess);
         }
     }
 }

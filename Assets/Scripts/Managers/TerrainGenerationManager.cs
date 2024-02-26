@@ -19,7 +19,7 @@ namespace TerrainGeneration
         [SerializeField]
         private Texture2D texture;
 
-        [Header("Gradients")]
+        [Header("Color Schemes")]
         [SerializeField]
         private List<Gradient> gradients;
 
@@ -85,6 +85,15 @@ namespace TerrainGeneration
             NeedToGenerate = true;
         }
 
+        #region Terrain Visual Representation
+        /// <summary>Set terrain heights.</summary>
+        private void GenerateTerrain()
+        {
+            terrain.terrainData.heightmapResolution = SelectedSizeAsNumber;
+            terrain.terrainData.size = new Vector3(SelectedSizeAsNumber, SelectedSizeAsNumber / 10, SelectedSizeAsNumber);
+            terrain.terrainData.SetHeights(0, 0, HeightMap);
+        }
+
         /// <summary>Apply generated texture pixel by pixel.</summary>
         private void ApplyTexture()
         {
@@ -103,14 +112,6 @@ namespace TerrainGeneration
             }
 
             texture.Apply();
-        }
-
-        /// <summary>Set terrain heights.</summary>
-        private void GenerateTerrain()
-        {
-            terrain.terrainData.heightmapResolution = SelectedSizeAsNumber;
-            terrain.terrainData.size = new Vector3(SelectedSizeAsNumber, SelectedSizeAsNumber / 10, SelectedSizeAsNumber);
-            terrain.terrainData.SetHeights(0, 0, HeightMap);
         }
 
         /// <summary>Paint terrain pixel by pixel depending on its height.</summary>
@@ -176,5 +177,6 @@ namespace TerrainGeneration
             AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
             TerrainSizeChanged?.Invoke(SelectedSizeAsNumber);
         }
+        #endregion
     }
 }
