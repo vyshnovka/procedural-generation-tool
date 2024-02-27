@@ -1,4 +1,4 @@
-# Procedural Terrain Generation
+# Procedural Terrain Generation Tool
 
 The project contains some algorithms for procedural terrain generation implemented on C# for Unity.    
 Algorithms generate a heightmap, then a texture and a terrain based on it.
@@ -31,7 +31,7 @@ Worley noise comes close to simulating textures of stone, water, or biological c
  ## Tools
 
 ![image](https://img.shields.io/badge/Unity-100000?style=for-the-badge&logo=unity&logoColor=white) 
-![image](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white) 
+![image](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c%23&logoColor=white) 
 ![image](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 
 ## Setup
