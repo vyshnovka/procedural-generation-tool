@@ -18,7 +18,7 @@ namespace Managers
 
         void OnEnable()
         {
-            TerrainGenerationManager.TerrainSizeChanged += UpdateValueOFSizeDropdown;
+            TerrainGenerationManager.TerrainSizeChanged += UpdateValueOfSizeDropdown;
 
             root = document.rootVisualElement;
             root.Q<Button>("Generate").clicked += () => terrainManager.DisplayResult();
@@ -51,10 +51,10 @@ namespace Managers
 
         void OnDisable()
         {
-            TerrainGenerationManager.TerrainSizeChanged -= UpdateValueOFSizeDropdown;
+            TerrainGenerationManager.TerrainSizeChanged -= UpdateValueOfSizeDropdown;
         }
 
-        private void UpdateValueOFSizeDropdown(int value)
+        private void UpdateValueOfSizeDropdown(int value)
         {
             var sizeDropdown = root.Q<EnumField>("SizeEnum");
             sizeDropdown.value = (Enum)Enum.ToObject(sizeDropdown.value.GetType(), value);
