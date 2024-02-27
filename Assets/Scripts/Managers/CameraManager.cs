@@ -17,6 +17,12 @@ namespace Managers
         }
 
         /// <summary>Adjust camera to always show the whole terrain depending on its size.</summary>
-        private void UpdateCameraPositionForTerrainSize(int position) => Camera.main.transform.SetPosition(position / 2, position / 2, -(position / 4));
+        private void UpdateCameraPositionForTerrainSize(int position)
+        {
+            var camera = Camera.main;
+
+            camera.transform.SetPosition(position / 2, position / 2, -(position / 4));
+            camera.farClipPlane = position * 2;
+        }
     }
 }
