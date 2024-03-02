@@ -1,32 +1,19 @@
 # Procedural Terrain Generation Tool
 
-The project contains some algorithms for procedural terrain generation implemented on C# for Unity.    
-Algorithms generate a heightmap, then a texture and a terrain based on it.
+It is a (hopefully) powerful software designed to bring virtual landscapes to life. It generates a heightmap, followed by a texture, and then creates a painted terrain based on the noise data.
 
-### White Noise
+### Key features:
 
-White noise represents a set of random values with no additional processing.
+- Supports 4 algorithms of noise generation (White Noise, ​Perlin Noise, Diamond-Square, and Worley Noise). Each algorithm offers unique characteristics and can be tailored to specific terrain generation needs.​
+- Includes different terrain sizes and 3 stunning color schemes to enhance realism and aesthetics​.
+_**Tip:** try generating Worley Noise with a WaterSurface color scheme. You won't regret._
+- Allows to preserve and revisit favorite terrains with ease using the save/load functionality.
 
-<img width="1200" alt="white-terrain" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/3d485937-f42b-4cab-8b14-671c0010d144">
-
-
-### Perlin Noise
-
-Perlin noise is a type of gradient noise. It is most basic yet most customizable algorithm. Proper settings allow to achieve absolutely unique textures.
-
-<img width="1201" alt="perlin-terrain" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/54fd37e1-cc21-454e-8c84-3081bf2ac4df">
-
-### Diamond-Square
-
-Diamond-Square algorithm is suitable for generating realistic-looking landscapes. It was once described as flawed due to noticeable vertical and horizontal creases at the edges, but who cares if it still generates a decent result?
-
-<img width="1201" alt="diamond-terrain" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/2ac93025-1d7a-4ed5-9c2c-6b5f174795ea">
-
-### Worley Noise
-
-Worley noise comes close to simulating textures of stone, water, or biological cells. Seriously, doesn't it look like sea waves?
-
-<img width="1200" alt="worley-terrain" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/d965ea1c-461f-4f4f-a28e-1ce895380b0d">
+### Demo results:
+<img width="472" alt="White Noise" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/354b5684-d562-4eb6-84df-e2ee56dcd1e1">
+<img width="472" alt="Perlin Noise" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/de28395c-4b62-464d-ae45-8400c34b9ae2">
+<img width="472" alt="Diamond-Square" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/d6f55c86-68dc-4c2a-be4b-65d87fd0d0f7">
+<img width="472" alt="Worley Noise" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/126785cb-a242-43b2-87c9-fd12ae5c4341">
 
  ## Tools
 
