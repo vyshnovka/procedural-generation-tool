@@ -10,10 +10,8 @@ _**Tip:** try generating Worley Noise with a WaterSurface color scheme. You won'
 - Allows to preserve and revisit favorite terrains with ease using the save/load functionality.
 
 ### Demo results:
-<img width="472" alt="White Noise" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/354b5684-d562-4eb6-84df-e2ee56dcd1e1">
-<img width="472" alt="Perlin Noise" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/de28395c-4b62-464d-ae45-8400c34b9ae2">
-<img width="472" alt="Diamond-Square" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/d6f55c86-68dc-4c2a-be4b-65d87fd0d0f7">
-<img width="472" alt="Worley Noise" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/126785cb-a242-43b2-87c9-fd12ae5c4341">
+<img width="1154" alt="Screenshot 2024-02-29 215011 - Copy" src="https://github.com/vyshnovka/procedural-generation/assets/70700078/9ca57d50-11ce-48e7-9e4b-601a01d2e6ee">
+
 
  ## Tools
 
