@@ -1,4 +1,4 @@
-# Procedural Terrain Generation Tool
+# TeraGenera - a procedural terrain generation tool
 
 It is a (hopefully) powerful software designed to bring virtual landscapes to life. It generates a heightmap, followed by a texture, and then creates a painted terrain based on the noise data.
 
